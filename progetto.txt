@@ -1,0 +1,18 @@
+
+ PROGETTO N.2: ANALIZZATORE DI DHCP
+
+
+
+il file main.c conterra` un ciclo che fa partire la cattura da file o da interfaccia di rete. il filtro trattiene i pacchetti DHCP ed
+analizza i primi bytes per determinare il tipo di pacchetto (Discovery: Enrico; Offer: Giulio; Request: Max; Acknowledge: Marco)
+il main eseguira` la funzione discovery(*char packet) in cui passera` un puntatore ad array di char partendo dal contenuto del pacchetto udp.
+struttura file:
+
+main.c
+discovery.c
+offer.c
+request.c
+acknowledge.c
+
+il file catturatest.cap servira` ad eseguire le prove di corretta decodifica dei pacchetti.
+
