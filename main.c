@@ -14,6 +14,9 @@ void problem_pkt(struct timeval ts, const char *reason);
 /* Report the specific problem of a packet being too short. */
 void too_short(struct timeval ts, const char *truncated_hdr);
 
+void got_packet(const unsigned char *packet, struct timeval ts,
+			unsigned int capture_len);
+
 int main(int argc, char *argv[])
 {
 
@@ -43,7 +46,7 @@ int main(int argc, char *argv[])
 			return(2);
 	 	}
 	} else {
-                handle = pcap_open_offline("cattura0", errbuf);
+                handle = pcap_open_offline("cattura1", errbuf);
 	}
 
 	/* Compile and apply the filter */

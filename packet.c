@@ -20,6 +20,7 @@
 const char *timestamp_string(struct timeval ts);
 void problem_pkt(struct timeval ts, const char *reason);
 void too_short(struct timeval ts, const char *truncated_hdr);
+void bootreply(unsigned char *packet, int len);
 
 struct UDP_hdr {
 	u_short	uh_sport;		/* source port */
@@ -33,7 +34,7 @@ void got_packet(const unsigned char *packet, struct timeval ts,
 	struct ip *ip;
 	struct UDP_hdr *udp;
 	unsigned int IP_header_length;
-	int i;
+	int i, len;
 	if (capture_len < sizeof(struct ether_header))
 		{
 		too_short(ts, "Ethernet header");
@@ -84,14 +85,37 @@ void got_packet(const unsigned char *packet, struct timeval ts,
 		ntohs(udp->uh_dport),
 		ntohs(udp->uh_ulen));
 
-	for (i = 0; i < ntohs(udp->uh_ulen); i++) {
-		printf("%d/%d %c\n", i, ntohs(udp->uh_ulen), packet[i]);
+	for (i = 8; i < ntohs(udp->uh_ulen); i++) {
+		printf("%d/%d %d %c\n", i, ntohs(udp->uh_ulen), packet[i], packet[i]);
 	}
 	printf("\n");
+	len = ntohs(udp->uh_ulen) - 8;
+		
+
+	if (packet[8] == 2) {
+		bootreply((unsigned char*)packet+8, (int)len);
+		return;
+	}
+
+	if (packet[8] == 1) {
+		request((unsigned char*)packet+8, (int)len);
+		return;
+	}
+
+	printf("Altro tipo di richiesta... %d\n", packet[8]);
+
 
 
 }
 
+
+void bootreply(unsigned char *packet, int len) {
+	int i;
+	for (i = 0; i < len; i++) {
+		printf("BOOTREPLY %d/%d %d %c\n", i, len, packet[i], packet[i]);
+	}
+	printf("FINE BOOTREPLY\n");
+}
 
 
 const char *timestamp_string(struct timeval ts) {
