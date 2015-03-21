@@ -22,13 +22,14 @@ void bootp(unsigned char *packet, int len) {
 	
 	len_cost = 0; //azzero i contatori
 	tot = len;
-	printf("len_cost: %d\n",len_cost);
+	
 	int i;
 	int len_var;
+	/* Stampa pacchetto intero per Debug
 	for ( i=0; i < len ; i++){
 		printf("%d",packet[i]);
 	}
-	printf("\n");
+	printf("\n");*/
 	unsigned char op, htype, hlen, hops, xid[4], secs[2], flags[2];
 	unsigned char ciaddr[4], yiaddr[4], siaddr[4], giaddr[4], chaddr[16];
 	unsigned char sname[64], file[128];
@@ -56,16 +57,9 @@ void bootp(unsigned char *packet, int len) {
 	
 	printbootp(op, htype, hlen, hops, xid, secs, flags, ciaddr, yiaddr, siaddr, giaddr, chaddr,sname, file, options, len_var);
 
-/*	strcpy(packet,cutter(&op,packet,sizeof(op)));
-	strcpy(packet,cutter(&htype,packet,sizeof(htype)));
-	strcpy(packet,cutter(&hlen,packet,sizeof(hlen)));
-	strcpy(packet,cutter(&hops,packe,sizeof(hops)));
-	strcpy(packet,cutter(
-	strcpy(variab,parola);
-*/
 }
 
-char * dividi(unsigned char *dst, unsigned char *src, size_t n){
+char * dividi(unsigned char *dst, unsigned char *src, size_t n){ 
 	int i;
 	for ( i = 0; i < n; i++) {
 		dst[i] = src[i];
