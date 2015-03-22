@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#define DEBUG
+
 int len_cost, tot; //inizializzo i contatori
 
 char * dividi(unsigned char *dst, unsigned char *src, size_t );
@@ -25,11 +27,14 @@ void bootp(unsigned char *packet, int len) {
 	
 	int i;
 	int len_var;
-	/* Stampa pacchetto intero per Debug
+	/* Stampa pacchetto intero per Debug*/
+#ifdef DEBUG
+	printf("packet: ");
 	for ( i=0; i < len ; i++){
 		printf("%d",packet[i]);
 	}
-	printf("\n");*/
+	printf("\n");
+#endif
 	unsigned char op, htype, hlen, hops, xid[4], secs[2], flags[2];
 	unsigned char ciaddr[4], yiaddr[4], siaddr[4], giaddr[4], chaddr[16];
 	unsigned char sname[64], file[128];
@@ -63,9 +68,13 @@ char * dividi(unsigned char *dst, unsigned char *src, size_t n){
 	int i;
 	for ( i = 0; i < n; i++) {
 		dst[i] = src[i];
-		//printf("%d ",dst[i]);
+#ifdef DEBUG
+		printf("%d ",dst[i]);
+#endif
 	}
-	//printf(" lungo %d\n",i);
+#ifdef DEBUG
+	printf(" lungo %d\n",i);
+#endif
 	tot = tot - i;
 	len_cost = len_cost + i;
 	return &src[i];
