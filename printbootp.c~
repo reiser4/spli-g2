@@ -80,32 +80,35 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 	printf("\n");
 
 	printf("Client IP address: ");
-	for(i=0; i<4; i++) {
+	printip(ciaddr);	
+	/*for(i=0; i<4; i++) {
 		printf("%d", ciaddr[i]);
 		if(i<3)
-			printf(":");
+			printf(".");
 		else
 			printf("\n");
-	}
+	}*/
 	
 	printf("'Your' IP Address: ");
-	for(i=0; i<4; i++) {
+	/*for(i=0; i<4; i++) {
 		printf("%d", yiaddr[i]);
 		if(i<3)
-			printf(":");
+			printf(".");
 		else
 			printf("\n");
-	}
-	
+	}*/
+	printip(yiaddr);
+
 	printf("Server IP Address: ");
 	for(i=0; i<4; i++) {
 		printf("%d", siaddr[i]);
 		if(i<3)
-			printf(":");
+			printf(".");
 		else
 			printf("\n");
-	}
-	
+	}	
+	printip(siaddr);
+
 	printf("Gateway IP Address: ");
 	for(i=0; i<4; i++) {
 		printf("%d", giaddr[i]);
@@ -134,9 +137,12 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 		printf("%d", file[i]);
 	printf("\n");
 
-	//TODO: options
+	printf("Lunghezza campo options: %d\n", len_opt);	
+	for(i=0; i<len_opt; i++)
+		printf("%d", options[i]);
+	printf("\n");
 
-	
+
 	//printf ("Ip del server: "); printip(siaddr); printf("\n);
 	
 }

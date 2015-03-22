@@ -1,4 +1,3 @@
-#include <stdio.h>
 
 printip(const unsigned char* ip) {
 
@@ -7,7 +6,7 @@ printip(const unsigned char* ip) {
 	// output: "127.0.0.1"
 	int i;
 	for(i=0; i<4; i++) {
-		printf("%d", ip[i]);
+		printf("%c", ip[i]);
 		if(i<3)
 			printf(".");
 		else
