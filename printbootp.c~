@@ -136,7 +136,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 
 	//TODO: options
 
-
+	
 	//printf ("Ip del server: "); printip(siaddr); printf("\n);
 	
 }
