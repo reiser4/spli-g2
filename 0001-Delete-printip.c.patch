@@ -1,0 +1,35 @@
+From b4fba58e83752e66d70d8767eea9afda9af00f6d Mon Sep 17 00:00:00 2001
+From: giulioribe <giulio.ribe@gmail.com>
+Date: Sun, 22 Mar 2015 17:32:18 +0100
+Subject: [PATCH] Delete printip.c~
+
+---
+ printip.c~ | 16 ----------------
+ 1 file changed, 16 deletions(-)
+ delete mode 100644 printip.c~
+
+diff --git a/printip.c~ b/printip.c~
+deleted file mode 100644
+index 0b2958d..0000000
+--- a/printip.c~
++++ /dev/null
+@@ -1,16 +0,0 @@
+-
+-printip(const unsigned char* ip) {
+-
+-	// dato un array di 4 char stampare l'indirizzo ip in formato leggibile
+-	// esempio: ip[] = [127, 0, 0, 1];
+-	// output: "127.0.0.1"
+-	int i;
+-	for(i=0; i<4; i++) {
+-		printf("%c", ip[i]);
+-		if(i<3)
+-			printf(".");
+-		else
+-			printf("\n");
+-	}
+-
+-}
+-- 
+1.9.1
+
