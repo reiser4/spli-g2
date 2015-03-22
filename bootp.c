@@ -41,7 +41,8 @@ void bootp(unsigned char *packet, int len) {
 	unsigned char options[1024];
 	packet = dividi(&op,packet,sizeof(op));
 	packet = dividi(&htype,packet,sizeof(htype));
-	packet = dividi(&hlen,packet,sizeof(hops));
+	packet = dividi(&hlen,packet,sizeof(hlen));
+	packet = dividi(&hops,packet,sizeof(hops));
 	packet = dividi(xid,packet,sizeof(xid));
 	packet = dividi(secs,packet,sizeof(secs));
 	packet = dividi(flags,packet,sizeof(flags));
