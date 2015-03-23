@@ -11,43 +11,43 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 		printf("Message op code / message type, value: %d -> BOOTREQUEST\n", op);
 	else
 		printf("Message op code / message type, value: %d -> BOOTREPLY\n", op);
-	
+	printf("Hardware address type, value: ");
 	switch(htype) {
 		case 1:
-			printf("Hardware address type, value: %d -> Ethernet (10 Mb)\n", htype);
+			printf(" %d -> Ethernet (10 Mb)\n", htype);
 			break;
 		case 6:
-			printf("Hardware address type, value: %d -> IEEE 802 Networks\n", htype);
+			printf(" %d -> IEEE 802 Networks\n", htype);
 			break;
 		case 7:
-			printf("Hardware address type, value: %d -> ARCNET\n", htype);
+			printf(" %d -> ARCNET\n", htype);
 			break;
 		case 11:
-			printf("Hardware address type, value: %d -> LocalTalk\n", htype);
+			printf(" %d -> LocalTalk\n", htype);
 			break;
 		case 12:
-			printf("Hardware address type, value: %d -> LocalNet (IBM PCNet or SYTEK LocalNET\n", htype);
+			printf(" %d -> LocalNet (IBM PCNet or SYTEK LocalNET\n", htype);
 			break;
 		case 14:
-			printf("Hardware address type, value: %d -> SMDS\n", htype);
+			printf(" %d -> SMDS\n", htype);
 			break;
 		case 15:
-			printf("Hardware address type, value: %d -> Frame Relay\n", htype);
+			printf(" %d -> Frame Relay\n", htype);
 			break;
 		case 16:
-			printf("Hardware address type, value: %d -> Asynchronous Transfer Mode (ATM)\n", htype);
+			printf(" %d -> Asynchronous Transfer Mode (ATM)\n", htype);
 			break;
 		case 17:
-			printf("Hardware address type, value: %d -> HDLC\n", htype);
+			printf(" %d -> HDLC\n", htype);
 			break;
 		case 18:
-			printf("Hardware address type, value: %d -> Fibre Channel\n", htype);
+			printf(" %d -> Fibre Channel\n", htype);
 			break;
 		case 19:
-			printf("Hardware address type, value: %d -> Asynchronous Transfer Mode (ATM)\n", htype);
+			printf(" %d -> Asynchronous Transfer Mode (ATM)\n", htype);
 			break;
 		case 20:
-			printf("Hardware address type, value: %d -> Serial Line\n", htype);
+			printf(" %d -> Serial Line\n", htype);
 			break;
 		default:
 			printf("ERRORE: switch htype");
@@ -70,18 +70,18 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 	
 	printf("Seconds elapsed since client began address acquisition or renewal process, values: %d - %d\n", secs[0], secs[1]);
 
+	// TODO: stampare bit
+	printf("flags[0]: %d, flags[1]: %d\n", flags[0], flags[1]);
 	printf("Flags, value broadcast flag (1 bit): ");
 	for(i=0; i<8; i++) {
-		printf("%d", flags[0] & (1 << (8-i)));
-		if(i<1)
+		printf("%d-", flags[0] & (1 << (8-i)));
+		/*if(i<1)
 			printf(" - value reserved (15 bit): ");
-	}
-	printf(" ");
-	for(i=0; i<8; i++) {
-		printf("%d", !!((flags[1] << i) & 0x80));
+		else
+			printf("-");*/
 	}
 	printf("\n");
-
+	
 	printf("Client IP address: ");
 	printip(ciaddr);	
 	
@@ -123,10 +123,12 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 	printf("Print options fields:\n");
 	i_opt=0;
 	while(i_opt<len_opt) {
+
 #ifdef DEBUG
 		
 		printf("Valore options (dopo while): %d\n", options[i_opt]);
 #endif
+
 		switch(options[i_opt]) {
 			case 1:
 				// Aumento di uno perche' ho letto il tipo di campo opzionale
@@ -137,12 +139,31 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				i= i_opt;
 				// Aumento di 4 perche' vado a leggere un indirizzo ip
 				i_opt += len;
-				printf("Subnet Mask: ");
+				printf("\tSubnet Mask: ");
 				for(; i<i_opt; i++) {
 					// Print ip
 					printf("%d", options[i]);
 					if(i<(i_opt-1))
 						printf(".");
+					else
+						printf("\n");
+				}
+				break;
+			case 2:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
+				// Aumento di 4 perche' vado a leggere un indirizzo ip
+				i_opt += len;
+				printf("\tTime Offset: ");
+				for(; i<i_opt; i++) {
+					// Stampo l'ora UTC;
+					printf("%d", options[i]);
+					if(i<(i_opt-1))
+						printf(":");
 					else
 						printf("\n");
 				}
@@ -157,7 +178,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				// Aumento di n perche' vado a leggere le opzioni del router
 				i_opt += len;
 				n_addr = len / 4;
-				printf("Router Option (%d address): ", n_addr);
+				printf("\tRouter Option (%d address): ", n_addr);
 				for(; i<i_opt; i++) {
 					// Print ip
 					printf("%d", options[i]);
@@ -178,7 +199,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				// Aumento di n perche' vado a leggere n indirizzi ip del router
 				i_opt += len;
 				n_addr = len / 4;
-				printf("Domain Name Server (%d address): ", n_addr);
+				printf("\tDomain Name Server (%d address): ", n_addr);
 				y=0;
 				for(; i<i_opt; i++) {
 					y++;
@@ -203,7 +224,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				i = i_opt;
 				// Aumento di 2 perche' vado a leggere due valori
 				i_opt += len;
-				printf("Host Name Option: ");
+				printf("\tHost Name Option: ");
 				for(; i<i_opt; i++) {
 					// Stampo i parametri
 					printf("%c", options[i]);
@@ -221,7 +242,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				// Aumento di n perche' vado a leggere n indirizzi ip del router
 				i_opt += len;
 				n_addr = len / 4;
-				printf("Domain Name (%d address): ", n_addr);
+				printf("\tDomain Name (%d address): ", n_addr);
 				y=0;
 				for(; i<i_opt; i++) {
 					y++;
@@ -237,6 +258,51 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				}
 				printf("\n");
 				break;
+			case 26:
+				/* 
+					This option specifies the MTU to use on this interface.  The MTU is
+					specified as a 16-bit unsigned integer.  The minimum legal value for
+					the MTU is 68.
+				*/
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				i = i_opt;
+				// aumento di due perche' ho la lughezza fissa
+				i_opt += len;
+				printf("\tInterface MTU Option: ");
+				for(; i<i_opt; i++) {
+					printf("%d ", options[i]);
+				}
+				printf("\n");
+				i_opt++;
+				break;
+			case 42:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
+				// Aumento di n perche' vado a leggere n indirizzi ip del router
+				i_opt += len;
+				n_addr = len / 4;
+				printf("\tNetwork Time Protocol Servers Option (%d address): ", n_addr);
+				y=0;
+				for(; i<i_opt; i++) {
+					y++;
+					// Print ip
+					printf("%d", options[i]);
+					if(y<4) {
+						if(i<(i_opt-1))
+							printf(".");
+					} else {
+						y=0;
+						printf(" ");
+					}
+				}
+				printf("\n");
+				break;				
 			case 44:
 				// Aumento di uno perche' ho letto il tipo di campo opzionale
 				i_opt++;
@@ -247,7 +313,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				// Aumento di n perche' vado a leggere n indirizzi ip del router
 				i_opt += len;
 				n_addr = len / 4;
-				printf("NetBIOS over TCP/IP Name Server Option (%d address): ", n_addr);
+				printf("\tNetBIOS over TCP/IP Name Server Option (%d address): ", n_addr);
 				y=0;
 				for(; i<i_opt; i++) {
 					y++;
@@ -269,8 +335,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				len = options[i_opt];
 				// aumento di uno perche' ho la lughezza fissa
 				i_opt++;
-				i= i_opt;
-				printf("NetBIOS over TCP/IP Node Type Option: ");
+				printf("\tNetBIOS over TCP/IP Node Type Option: ");
 				switch(options[i_opt]) {
 					case 1:
 						printf("B-node\n");
@@ -299,7 +364,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				i= i_opt;
 				// Aumento di 4 perche' vado a leggere un indirizzo ip
 				i_opt += len;
-				printf("Requested IP Address: ");
+				printf("\tRequested IP Address: ");
 				for(; i<i_opt; i++) {
 					// Print ip
 					printf("%d", options[i]);
@@ -320,7 +385,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				// Aumento di 4 perche' vado a leggere un indirizzo ip
 				i_opt += len;
 				
-				printf("IP Address Lease Time: ");
+				printf("\tIP Address Lease Time: ");
 				for(; i<i_opt; i++) {
 					// Stampo i secondi
 					printf("%d", options[i]);
@@ -335,10 +400,12 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				i_opt++;
 				// lunghezza valore fissa = 1
 				i_opt++;
+
 #ifdef DEBUG
 				printf("Value: %d\n", options[i_opt]);			
 #endif
-				printf("DHCP Message Type: ");
+
+				printf("\tDHCP Message Type: ");
 				switch(options[i_opt]) {
 					case 1:
 						printf("DHCPDISCOVER\n");
@@ -379,13 +446,8 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				i= i_opt;
 				// Aumento di 4 perche' vado a leggere un indirizzo ip
 				i_opt += len;
-				printf("Server identifier: ");
+				printf("\tServer identifier: ");
 				for(; i<i_opt; i++) {
-/*
-#ifdef DEBUG
-					printf("\n Valore i_opt: %d\n", i_opt);
-					printf("Valore i: %d\n", i);
-#endif*/
 					// Stampo l'indirizzo ip
 					printf("%d", options[i]);
 					if(i<(i_opt-1))
@@ -403,7 +465,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				i= i_opt;
 				// Aumento di n perche' vado a leggere un indirizzo ip
 				i_opt += len;
-				printf("Parameter request list (%d parameters): ", len);
+				printf("\tParameter request list (%d parameters): ", len);
 				for(; i<i_opt; i++) {
 					// Stampo i parametri di richiesta 
 					printf("%d ", options[i]);
@@ -420,7 +482,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				i = i_opt;
 				// Aumento di 2 perche' vado a leggere due valori
 				i_opt += len;
-				printf("Maximum DHCP message size: ");
+				printf("\tMaximum DHCP message size: ");
 				for(; i<i_opt; i++) {
 					// Stampo i parametri
 					printf("%d ", options[i]);
@@ -435,7 +497,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				len = options[i_opt];
 				// aumento di uno perche' ho la lughezza fissa
 				i_opt++;
-				printf("Client-identifier (type: %d): ", options[i_opt]);
+				printf("\tClient-identifier (type: %d): ", options[i_opt]);
 				// Aumento di uno perchè ho preso il Type
 				i_opt++;
 				i = i_opt;
@@ -450,7 +512,7 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				break;
 			case 255:
 				// Aggiungo valore
-				printf("End Option, value: %d\n", options[i_opt]);
+				printf("\tEnd Option, value: %d\n", options[i_opt]);
 				// Sono arrivato alla fine del campo variabile, per questo motivo esco
 				i_opt = len_opt;
 				break;
@@ -460,7 +522,9 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 				return(-1);
 		}
 	}
+
 #ifdef DEBUG
 	printf ("Sono fuori dal ciclo while\n");
 #endif
+
 }
