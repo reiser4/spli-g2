@@ -1,9 +1,11 @@
 #include <stdio.h>
 
-#define DEBUG
+//#define DEBUG
+
+
 printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned char hops, const unsigned char *xid, const unsigned char *secs, const unsigned char *flags, const unsigned char *ciaddr, const unsigned char *yiaddr, const unsigned char *siaddr, const unsigned char* giaddr, const unsigned char* chaddr, const unsigned char* sname, const unsigned char* file, const unsigned char *options, int len_opt){
 	
-	int i, i_opt, len, y, value;
+	int i, i_opt, len, y, value, n_addr;
 
 	if(op == 1)
 		printf("Message op code / message type, value: %d -> BOOTREQUEST\n", op);
@@ -123,22 +125,221 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 	while(i_opt<len_opt) {
 #ifdef DEBUG
 		
-		printf("Valore options: %d\n", options[i_opt]);
+		printf("Valore options (dopo while): %d\n", options[i_opt]);
 #endif
 		switch(options[i_opt]) {
+			case 1:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
+				// Aumento di 4 perche' vado a leggere un indirizzo ip
+				i_opt += len;
+				printf("Subnet Mask: ");
+				for(; i<i_opt; i++) {
+					// Print ip
+					printf("%d", options[i]);
+					if(i<(i_opt-1))
+						printf(".");
+					else
+						printf("\n");
+				}
+				break;
+			case 3:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
+				// Aumento di n perche' vado a leggere le opzioni del router
+				i_opt += len;
+				n_addr = len / 4;
+				printf("Router Option (%d address): ", n_addr);
+				for(; i<i_opt; i++) {
+					// Print ip
+					printf("%d", options[i]);
+					
+					if(i<(i_opt-1))
+						printf(".");
+					else
+						printf("\n");
+				}
+				break;
+			case 6:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
+				// Aumento di n perche' vado a leggere n indirizzi ip del router
+				i_opt += len;
+				n_addr = len / 4;
+				printf("Domain Name Server (%d address): ", n_addr);
+				y=0;
+				for(; i<i_opt; i++) {
+					y++;
+					// Print ip
+					printf("%d", options[i]);
+					if(y<4) {
+						if(i<(i_opt-1))
+							printf(".");
+					} else {
+						y=0;
+						printf(" ");
+					}
+				}
+				printf("\n");
+				break;
+			case 12:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i = i_opt;
+				// Aumento di 2 perche' vado a leggere due valori
+				i_opt += len;
+				printf("Host Name Option: ");
+				for(; i<i_opt; i++) {
+					// Stampo i parametri
+					printf("%c", options[i]);
+					if(i == (i_opt-1))
+						printf("\n");
+				}
+				break;				
+			case 15:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
+				// Aumento di n perche' vado a leggere n indirizzi ip del router
+				i_opt += len;
+				n_addr = len / 4;
+				printf("Domain Name (%d address): ", n_addr);
+				y=0;
+				for(; i<i_opt; i++) {
+					y++;
+					// Print ip
+					printf("%d", options[i]);
+					if(y<4) {
+						if(i<(i_opt-1))
+							printf(".");
+					} else {
+						y=0;
+						printf(" ");
+					}
+				}
+				printf("\n");
+				break;
+			case 44:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
+				// Aumento di n perche' vado a leggere n indirizzi ip del router
+				i_opt += len;
+				n_addr = len / 4;
+				printf("NetBIOS over TCP/IP Name Server Option (%d address): ", n_addr);
+				y=0;
+				for(; i<i_opt; i++) {
+					y++;
+					// Print ip
+					printf("%d", options[i]);
+					if(y<4) {
+						if(i<(i_opt-1))
+							printf(".");
+					} else {
+						y=0;
+						printf(" ");
+					}
+				}
+				printf("\n");
+				break;
+			case 46:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
+				printf("NetBIOS over TCP/IP Node Type Option: ");
+				switch(options[i_opt]) {
+					case 1:
+						printf("B-node\n");
+						break;
+					case 2:
+						printf("P-node\n");
+						break;
+					case 4:
+						printf("M-node\n");
+						break;
+					case 8:
+						printf("H-node\n");
+						break;
+					default:
+						printf("ERRORE: case 46\n");
+						return(-1);
+				}
+				i_opt++;
+				break;
+			case 50:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
+				// Aumento di 4 perche' vado a leggere un indirizzo ip
+				i_opt += len;
+				printf("Requested IP Address: ");
+				for(; i<i_opt; i++) {
+					// Print ip
+					printf("%d", options[i]);
+					if(i<(i_opt-1))
+						printf(".");
+					else
+						printf("\n");
+				}
+				break;
+				
+			case 51:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
+				// Aumento di 4 perche' vado a leggere un indirizzo ip
+				i_opt += len;
+				
+				printf("IP Address Lease Time: ");
+				for(; i<i_opt; i++) {
+					// Stampo i secondi
+					printf("%d", options[i]);
+					if(i<(i_opt-1))
+						printf("-");
+					else
+						printf(" seconds\n");
+				}
+				break;
 			case 53:
 				// Aggiungo valore
 				i_opt++;
-				
-				
-				i_opt += len;
-				value = options[i_opt];
+				// lunghezza valore fissa = 1
+				i_opt++;
 #ifdef DEBUG
-				printf("len: %d\n", len);
-				printf("Value: %d\n", value);			
+				printf("Value: %d\n", options[i_opt]);			
 #endif
 				printf("DHCP Message Type: ");
-				switch(value) {
+				switch(options[i_opt]) {
 					case 1:
 						printf("DHCPDISCOVER\n");
 						break;
@@ -164,22 +365,28 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 						printf("DHCPINFORM\n");
 						break;
 					default:
-						printf("ERRORE: DHCP Message Type\n");
-						break;
+						printf("ERRORE: case 53\n");
+						return(-1);
 				}
 				i_opt++;
 				break;
 			case 54:
 				// Aumento di uno perche' ho letto il tipo di campo opzionale
 				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
 				// Aumento di 4 perche' vado a leggere un indirizzo ip
-				i_opt += 4;
+				i_opt += len;
 				printf("Server identifier: ");
-				for(i=i_opt; i<i_opt; i++) {
+				for(; i<i_opt; i++) {
+/*
 #ifdef DEBUG
 					printf("\n Valore i_opt: %d\n", i_opt);
 					printf("Valore i: %d\n", i);
-#endif
+#endif*/
+					// Stampo l'indirizzo ip
 					printf("%d", options[i]);
 					if(i<(i_opt-1))
 						printf(".");
@@ -187,14 +394,73 @@ printbootp(unsigned char op, unsigned char htype, unsigned char hlen, unsigned c
 						printf("\n");
 				}
 				break;
+			case 55:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i= i_opt;
+				// Aumento di n perche' vado a leggere un indirizzo ip
+				i_opt += len;
+				printf("Parameter request list (%d parameters): ", len);
+				for(; i<i_opt; i++) {
+					// Stampo i parametri di richiesta 
+					printf("%d ", options[i]);
+					if(i == (i_opt-1))
+						printf("\n");
+				}
+				break;
+			case 57:
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				i = i_opt;
+				// Aumento di 2 perche' vado a leggere due valori
+				i_opt += len;
+				printf("Maximum DHCP message size: ");
+				for(; i<i_opt; i++) {
+					// Stampo i parametri
+					printf("%d ", options[i]);
+					if(i == (i_opt-1))
+						printf("\n");
+				}
+				break;
+			case 61:
+				
+				// Aumento di uno perche' ho letto il tipo di campo opzionale
+				i_opt++;
+				len = options[i_opt];
+				// aumento di uno perche' ho la lughezza fissa
+				i_opt++;
+				printf("Client-identifier (type: %d): ", options[i_opt]);
+				// Aumento di uno perchè ho preso il Type
+				i_opt++;
+				i = i_opt;
+				// Aumento di 2 perche' vado a leggere due valori
+				i_opt += (len-1);
+				for(; i<i_opt; i++) {
+					// Stampo i parametri
+					printf("%d ", options[i]);
+					if(i == (i_opt-1))
+						printf("\n");
+				}
+				break;
+			case 255:
+				// Aggiungo valore
+				printf("End Option, value: %d\n", options[i_opt]);
+				// Sono arrivato alla fine del campo variabile, per questo motivo esco
+				i_opt = len_opt;
+				break;
+				
 			default:
 				printf("ERRORE: options fields\n");
 				return(-1);
-				break;
 		}
 	}
-
-
-	//printf ("Ip del server: "); printip(siaddr); printf("\n);
-	
+#ifdef DEBUG
+	printf ("Sono fuori dal ciclo while\n");
+#endif
 }
