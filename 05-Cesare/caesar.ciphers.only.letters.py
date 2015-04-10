@@ -1,4 +1,4 @@
-import os.path
+import os
 import sys
 
 MAX_KEY_SIZE = 26
@@ -63,7 +63,7 @@ def bruteforce(file_encrypt, file_bruteforce):
 
 
 if __name__ == "__main__":
-		
+	
 	if len(sys.argv) != 3:
 		print "ERROR: 'python caesar.ciphers.only.letters.py file_name.txt chiave'"
 		sys.exit(0)
