@@ -91,9 +91,8 @@ if __name__ == "__main__":
 	file_decrypt = file_name + "_decrypt.txt"
 	file_bruteforce = file_name + "_bruteforce.txt"
 	
-	foutput = open(file_bruteforce, 'w')
-	foutput.flush()
-	foutput.close()
+	if os.path.isfile(file_bruteforce):
+		os.remove(file_bruteforce)
 	
 	encrypt(file, key, file_encrypt)
 	decrypt(file_encrypt, key, file_decrypt)
