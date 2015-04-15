@@ -1,0 +1,19 @@
+
+
+usiamo la porta tcp 9999
+
+
+ENRICO: 
+	script che legge un file di testo, tolgo tutto tranne spazi e le maiuscole diventano minuscole
+	calcola MD5 e lo trasmette ad un dato ip, cifrato con una chiave data (cifrario di Cesare)
+
+GIULIO:
+	script che rimane in ascolto sulla porta 9999, accetta una connessione, decodifica il testo secondo
+	chiave data dall'utente, scrive l'output su file e stampa l'MD5
+
+MARCO: 
+	parte socket per fare MITM, quindi si potra` inserire in modo trasparente tra la comunicazione server-client.
+	una volta eseguito ascoltera` sulla porta 9999, a connessione avvenuta si connettera` al vero server
+
+MAX: 
+	dato il file intercettato, fa l'analisi a dizionario (lingua inglese)	
