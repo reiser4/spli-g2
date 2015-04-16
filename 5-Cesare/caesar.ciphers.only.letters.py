@@ -94,7 +94,7 @@ if __name__ == "__main__":
 	if os.path.isfile(file_bruteforce):
 		os.remove(file_bruteforce)
 	
-	encrypt(file, key, file_encrypt)
+	#encrypt(file, key, file_encrypt)
 	decrypt(file_encrypt, key, file_decrypt)
-	bruteforce(file_encrypt, file_bruteforce)
+	#bruteforce(file_encrypt, file_bruteforce)
 	
