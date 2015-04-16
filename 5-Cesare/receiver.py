@@ -10,7 +10,7 @@ def md5same(md5_1, md5_2):
         sys.exit()
     
 def md5(filename):
-    return hashlib.md5(open(file_original_encrypt, 'rb').read()).hexdigest()
+    return hashlib.md5(open(filename, 'rb').read()).hexdigest()
 
 def writefile(filename, message, mod=None):
     if mod == 'b':
@@ -20,7 +20,7 @@ def writefile(filename, message, mod=None):
     else:
         print "ERRORE nella chiamata della funzione 'writefile'"
         sys.exit()
-    foutput.write(message_encrypt)
+    foutput.write(message)
     foutput.flush()
     foutput.close()
     
@@ -53,7 +53,7 @@ if __name__ == "__main__":
         
         print "In attesa di connessione..."
         (clientsocket, clientaddress) = serversocket.accept()
-        #print "Connected with " + clientaddress[0] + ":" + clientaddress[1]
+        print "Connected with " + clientaddress[0] + ":" + str(clientaddress[1])
         
         message_encrypt = ''
         while True:
