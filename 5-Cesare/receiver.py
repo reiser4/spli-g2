@@ -2,6 +2,28 @@ import socket
 import sys
 import hashlib
 
+def md5same(md5_1, md5_2):
+    if md5_1 == md5_2:
+        print "Yeah, i due file sono uguali"
+    else:
+        print "Ops, i due file non sono uguali -> EXIT"
+        sys.exit()
+    
+def md5(filename):
+    return hashlib.md5(open(file_original_encrypt, 'rb').read()).hexdigest()
+
+def writefile(filename, message, mod=None):
+    if mod == 'b':
+        foutput = open(filename, 'wb')
+    elif not mod:
+        foutput = open(filename, 'w')
+    else:
+        print "ERRORE nella chiamata della funzione 'writefile'"
+        sys.exit()
+    foutput.write(message_encrypt)
+    foutput.flush()
+    foutput.close()
+    
 if __name__ == "__main__":
     
     print "Welcome to the party" 
@@ -14,14 +36,7 @@ if __name__ == "__main__":
     file_original = "pg100.txt"
     file_original_encrypt = "pg100.txt-cifrato"
     file_original_clean = "pg100.txt-pulito"
-    
-    while True:
-        input = raw_input ("Inserire la chiava per la decodifica: ")
-        if input.isdigit():
-            key = int(input)
-            if key > 0 and key <= 26:
-                break
-    
+
     try:
         #host = '::'
         host = ''
@@ -48,10 +63,7 @@ if __name__ == "__main__":
             else:
                 message_encrypt += message
         
-        foutput = open(file_encrypt, 'wb')
-        foutput.write(message_encrypt)
-        foutput.flush()
-        foutput.close()
+        writefile(file_encrypt, message_encrypt, 'b')
         
     except:
         raise
@@ -59,24 +71,20 @@ if __name__ == "__main__":
         
     finally:
         serversocket.close()
-    
     print 'Ho ricevuto un file, chiudo client e server socket'
-    
+
     print "Calcolo md5 del file appena ricevuto:\t",
-    md5_file_receive = hashlib.md5(open(file_encrypt, 'rb').read()).hexdigest()
+    md5_file_receive = md5(file_encrypt)
     print md5_file_receive
     
-    print "Calcolo md5 del file originale:\t\t",
-    md5_file_original = hashlib.md5(open(file_original_encrypt, 'rb').read()).hexdigest()
-    print md5_file_original
-    
-    if md5_file_receive == md5_file_original:
-        print "Yeah, i due file sono uguali"
-    else:
-        print "Ops, i due file non sono uguali"
-        sys.exit()
-    
     print
+    
+    while True:
+        input = raw_input ("Inserire la chiava per la decodifica: ")
+        if input.isdigit():
+            key = int(input)
+            if key > 0 and key <= 26:
+                break
     
     finput = open(file_encrypt, 'r')
     message_encrypt = finput.read()
@@ -96,23 +104,10 @@ if __name__ == "__main__":
         else:
             message_decrypt += char
     
-    foutput = open(file_decrypt, 'w')
-    foutput.write(message_decrypt)
-    foutput.flush()
-    foutput.close()
-    
+    writefile(file_decrypt, message_decrypt)
+
     print "Calcolo md5 del file decodificato:\t",
-    md5_file_decrypt = hashlib.md5(open(file_decrypt, 'rb').read()).hexdigest()
+    md5_file_decrypt = md5(file_decrypt)
     print md5_file_decrypt
-    
-    print "Calcolo md5 del file originale pulito:\t",
-    md5_file_original_clean = hashlib.md5(open(file_original_clean, 'rb').read()).hexdigest()
-    print md5_file_original_clean
-    
-    if md5_file_decrypt == md5_file_original_clean:
-        print "Yeah, i due file sono uguali"
-    else:
-        print "Ops, i due file non sono uguali"
-        sys.exit()
     
     print "Well done, goodbye"
