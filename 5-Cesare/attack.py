@@ -1,6 +1,8 @@
-
 import socket
 import sys
+from string import ascii_lowercase
+import brute_force.py
+
 
 # USE   marco@marco-Aspire-V5-571G:~ attack.py PORT IP_GIULIO
 
@@ -11,7 +13,7 @@ if __name__ == '__main__':
     IP_GIULIO = sys.argv[2]
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_address = ('', PORT)
+    server_address = (HOST, PORT)
     sock.bind(server_address)
     
     sock.listen(3)
@@ -49,5 +51,8 @@ if __name__ == '__main__':
             print ("ok")
         finally:
             sock_send.close()
-    
-    print("END");
+
+        key = brute_force.find_key("/home/marco/Python/message_crypted.txt")
+        print "\nThe key is : \n"
+        print key        
+        print("\n END");
