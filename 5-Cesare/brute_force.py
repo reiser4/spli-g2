@@ -47,7 +47,7 @@ def find_key(file_to_crack):
             if caesar(word,key) in word_in_diz:
                 occorrenze[key-1] +=1
             
-        print occorrenze
+        #print occorrenze
         
     key = len(ascii_lowercase)- (occorrenze.index(max(occorrenze)) + 1)
     return key

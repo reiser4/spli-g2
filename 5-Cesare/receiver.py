@@ -1,16 +1,7 @@
 import socket
 import sys
-import hashlib
+import utils
 
-def md5same(md5_1, md5_2):
-    if md5_1 == md5_2:
-        print "Yeah, i due file sono uguali"
-    else:
-        print "Ops, i due file non sono uguali -> EXIT"
-        sys.exit()
-    
-def md5(filename):
-    return hashlib.md5(open(filename, 'rb').read()).hexdigest()
 
 def writefile(filename, message, mod=None):
     if mod == 'b':
@@ -37,10 +28,18 @@ if __name__ == "__main__":
     file_original_encrypt = "pg100.txt-cifrato"
     file_original_clean = "pg100.txt-pulito"
 
+    while True:
+        port_str = raw_input("Inserire la porta in ascolto: ")
+        if port_str.isdigit():
+            break;
+        else:
+            print "ERROR, inserire una porta valida"
+
     try:
         #host = '::'
+        
         host = ''
-        port = 9999
+        port = int(port_str)
         buff = 512
      
         address = (host, port)
@@ -74,9 +73,8 @@ if __name__ == "__main__":
     print 'Ho ricevuto un file, chiudo client e server socket'
 
     print "Calcolo md5 del file appena ricevuto:\t",
-    md5_file_receive = md5(file_encrypt)
+    md5_file_receive = utils.md5(file_encrypt)
     print md5_file_receive
-    
     print
     
     while True:
@@ -85,29 +83,11 @@ if __name__ == "__main__":
             key = int(input)
             if key > 0 and key <= 26:
                 break
-    
-    finput = open(file_encrypt, 'r')
-    message_encrypt = finput.read()
-    finput.close()
-    
-    message_decrypt = ''
-    prova = True
-    
-    for char in message_encrypt:
-        if char.isalpha(): 
-            num = ord(char) - key                
-            if num > ord('z'):
-                num -= ord('z') - ord('a') + 1
-            elif num < ord('a'):
-                num += ord('z') - ord('a') + 1
-            message_decrypt += chr(num)
-        else:
-            message_decrypt += char
-    
-    writefile(file_decrypt, message_decrypt)
+        
+    writefile(file_decrypt, utils.algorithm(file_encrypt, key))
 
     print "Calcolo md5 del file decodificato:\t",
-    md5_file_decrypt = md5(file_decrypt)
+    md5_file_decrypt = utils.md5(file_decrypt)
     print md5_file_decrypt
-    
+    print
     print "Well done, goodbye"
