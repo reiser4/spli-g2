@@ -17,7 +17,6 @@ if __name__ == '__main__':
     PORT = int(sys.argv[1])
     BUFF = 512
     IP_GIULIO = sys.argv[2]
-    PORT_GIULIO = 9998
 
     filename_bruteforce = "message_bruteforce.txt"
     filename_decrypt = "message_decrypt_bruteforce.txt"
@@ -50,7 +49,7 @@ if __name__ == '__main__':
     file_bruteforce.close()
     print ("Connecting to Giulio..")
     sock_send = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    address = (IP_GIULIO, PORT_GIULIO)
+    address = (IP_GIULIO, PORT)
     sock_send.connect(address);
     print ("Connected to Giulio , sending file..")
 
