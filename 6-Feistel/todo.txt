@@ -17,3 +17,22 @@ l'attacco a forza bruta verifichera` che l'immagine decodificata coincide con l'
 
 esempio di funzione: basata su xor
 
+MAX:
+	dato in ingresso una chiave (10 bit) ed un blocco da 32 bit (espresso come 4 char),
+ 	fa la procedura di codifica e decodifica restituendo rispettivamente 32 bit codificati
+	e 32 bit decodificati.
+
+MARCO:
+	in caso di padding verra` creato su disco un nuovo file chiamato file-padded.tga da usare
+	come sorgente per i successivi passaggi
+        dato il file dell'immagine, la divide in blocchi da 32 bit (quindi con eventuale padding).
+	la passa alla funzione di max; poi dati i singoli blocchi scrive un file immagine.
+
+ENRICO:
+	codice di rete per invio, ricezione e intercettazione del file.
+	presentare in pagina web i vari passaggi
+
+GIULIO:
+	funzione di bruteforce: dato in ingresso il file originale e il file crittografato ci
+	restituisce la chiave.
+

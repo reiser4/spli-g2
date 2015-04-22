@@ -9,3 +9,17 @@ B inverte due volte la cifratura sul messaggio ricevuto (cifrato due volte), se 
 difficolta`: trovare una funzione invertibile (es. modulo)
 
 da fare con un'immagine. facciamo vedere che e` incomprensibile in tutti gli step tranne nel primo e l'ultimo.
+
+
+
+MAX:
+	dato in ingresso il messaggio e la chiave, codifica e fornisce il messaggio crittografato
+	
+MARCO: 
+	calcolo di minimo comune multiplo
+
+GIULIO:
+	potenze modulari (algoritmo euclideo)
+
+ENRICO: 
+	pagine web di cio` che trasmettono e ricevono A e B
