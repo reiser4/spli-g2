@@ -1,0 +1,11 @@
+
+ciascuno ha una chiave che non comunica al corrispondente (chiave A e B potrebbero essere stringhe casuali)
+
+A invia un messaggio a B,
+B cifra di nuovo il messaggio e lo rimanda a A
+A decifra il messaggio e lo manda a B
+B inverte due volte la cifratura sul messaggio ricevuto (cifrato due volte), se tutto va bene ottiene il messaggio m
+
+difficolta`: trovare una funzione invertibile (es. modulo)
+
+da fare con un'immagine. facciamo vedere che e` incomprensibile in tutti gli step tranne nel primo e l'ultimo.
