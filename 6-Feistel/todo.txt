@@ -1,0 +1,19 @@
+
+da fare:
+
+-qualcuno codifica
+-qualcuno decodifica
+-qualcuno attacca?
+
+-codifica immagine
+-la prendiamo in formato RAW cosi` ci accorgiamo di errori. estensione: TGA
+immagine: LENA
+
+-immagine divisa in tanti blocchetti. funzione piu` semplice: somma
+-accorgimento: in fondo potremmo finire il blocco troppo presto. aggiungiamo degli zeri
+-chiave minore o uguale di 10 bit: quindi di 10 bit.
+
+l'attacco a forza bruta verifichera` che l'immagine decodificata coincide con l'immagine originale
+
+esempio di funzione: basata su xor
+
