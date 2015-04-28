@@ -35,7 +35,7 @@ def hex2char(hex_type):
     
     return stringa
     
-def crypt(block, key):
+def crypt(key, block):
     # Ricevo blocco block di 32 bit
     # Traduco il blocco stringa in un intero Ex: ROMA ==> 0x524f4d41
     block = char2hex(block)
@@ -50,7 +50,7 @@ def crypt(block, key):
     return Li1 + Ri1
         
     
-def decrypt(block, key):
+def decrypt(key,block):
     
     block = char2hex(block)
     Li1 = (int(block) & 0xffff0000) >> 16 # 16 bit più significativi sono L_i
@@ -72,9 +72,9 @@ def main():
     
     INPUT = "ROMA"
     print "INPUT =", INPUT
-    OUTPUT = crypt(INPUT,key)
+    OUTPUT = crypt(key,INPUT)
     print "OUTPUT =", OUTPUT
-    print decrypt(OUTPUT,key)
+    print decrypt(key,OUTPUT)
     
 if __name__ == "__main__":
         main()
