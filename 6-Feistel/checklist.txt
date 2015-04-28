@@ -1,0 +1,4 @@
+
+installare imagemagick
+
+eseguire ./run.sh
