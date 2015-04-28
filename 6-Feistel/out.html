@@ -1,0 +1,5 @@
+<h2>Immagine iniziale:</h2>
+<img src="lena.tga.jpg"><br/><br/>
+<h2>Eseguo crittografia con chiave 1101100000<br/>
+$ python marco.py encrypt 10 lena.tga<br/>&gt;&gt;&gt; Opening lena.tga...<br/>&gt;&gt;&gt; Size : 786450 byte<br/>&gt;&gt;&gt; Padding of 2byte added!<br/>&gt;&gt;&gt; Created file-padded.tga.<br/>&gt;&gt;&gt; Number of blocks :196613<br/>&gt;&gt;&gt; Creating block list..<br/>&gt;&gt;&gt; List composed of 196613 blocks created.<br/>&gt;&gt;&gt; Traceback (most recent call last):<br/>&gt;&gt;&gt;   File "marco.py", line 116, in <module><br/>&gt;&gt;&gt;     create_crypted_file(sys.argv[2], sys.argv[3])<br/>&gt;&gt;&gt;   File "marco.py", line 62, in create_crypted_file<br/>&gt;&gt;&gt;     blockList[i] =  max_codifica(chiave , blockList[i])<br/>&gt;&gt;&gt; NameError: global name 'max_codifica' is not defined<h2>Immagine paddata:</h2>
+<img src="file-padded.tga.jpg">

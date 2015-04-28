@@ -12,10 +12,10 @@ def max_decodifica( key , block):
 
 """
 
-def create_crypted_file(filename):
+def create_crypted_file(chiave, filename):
 
-
-	filename = sys.argv[1]
+	## prendi un parametro della funzione e poi lo sovrascrivi??
+	#filename = sys.argv[1]
 	dim_blocco = 4
 	symbol_padding = '0'
 	
@@ -55,7 +55,8 @@ def create_crypted_file(filename):
 
 	print "List composed of "+str(numBlocks)+" blocks created."
 
-	chiave = randrange(1,1024)
+	### tolto da Enrico
+	###chiave = randrange(1,1024)
 
 	for i in range(0,numBlocks):
 		blockList[i] =  max_codifica(chiave , blockList[i])
@@ -108,3 +109,12 @@ def create_decrypted_file(key , filename):
 
 	filename = "file-decrypted.tga"
 	return filename
+
+
+
+if sys.argv[1] == "encrypt":
+	create_crypted_file(sys.argv[2], sys.argv[3])
+
+if sys.argv[1] == "decrypt":
+	create_decrypted_file(sys.argv[2], sys.argv[3])
+
