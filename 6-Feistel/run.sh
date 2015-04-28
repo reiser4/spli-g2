@@ -1,6 +1,7 @@
 #!/bin/sh
 
-
+echo "Richiede imagemagick: "
+echo "$ sudo apt-get install imagemagick"
 
 
 php run.php > out.html
@@ -10,5 +11,5 @@ if [ "$(uname)" = "Darwin" ]
 then
 	open -a "Google Chrome" out.html
 else
-	chrome out.html
+	google-chrome out.html
 fi

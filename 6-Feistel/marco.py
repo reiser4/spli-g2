@@ -76,7 +76,7 @@ def create_crypted_file(chiave, filename):
 	
 def create_decrypted_file(key , filename):
 
-	filename = sys.argv[1]
+	#filename = sys.argv[1]
 	dim_blocco = 4
 		
 	print 'Opening '+filename+'...'

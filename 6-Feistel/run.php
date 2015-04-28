@@ -26,8 +26,15 @@ $binkey = substr($pad,0,10);
 <br/><br/>
 <h2>Eseguo crittografia con chiave <?=$binkey ?>
 <br/>
-<? 
-pythonRun("python marco.py encrypt 10 lena.tga");
-?>
+<? pythonRun("python marco.py encrypt $binkey lena.tga"); ?>
 <h2>Immagine paddata:</h2>
 <? printTga("file-padded.tga"); ?>
+<h2>Immagine crittografata:</h2>
+<? printTga("file-crypted.tga"); ?>
+<h2>Ricerca della chiave: </h2>
+<? pythonRun("python bruteforce.py file-crypted.tga"); ?>
+<h2>Decodifica dell'immagine: </h2>
+<? pythonRun("python marco.py decrypt $binkey file-crypted.tga"); ?>
+<br/>
+<? printTga("file-decrypted.tga"); ?>
+
