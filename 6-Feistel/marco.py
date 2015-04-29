@@ -21,32 +21,38 @@ def create_crypted_file(chiave, filename):
 	len_header = 18
 	
 	print 'Opening '+filename+'...'
-	file = open(filename,'r')
-	data = file.read()
-	file.close()
+	file_o = open(filename,'rb')
+	data = file_o.read()
+	file_o.close()
 
 	print "Size : "+ str(len(data)) + " byte"
 
-	module = len(data) % dim_blocco
+	header = data[0:len_header]
+	body = data[len_header:]
+	
+	#Controllo se il body e' mod 32
+	module = len(body) % dim_blocco
 	padding = dim_blocco - module
 	
+	
 	if padding > 0:
-		data = data.ljust(len(data)+padding,symbol_padding); 
+		body = body.ljust(len(body)+padding,symbol_padding); 
 		print "Padding of "+str(padding)+"byte added!"
-
+		
 		newfile = open("file-padded.tga", 'wb')
-		newfile.write(data)
+		newfile.write(header) # Scrittura dell'header
+		newfile.write(body) # Scrittura dell'body
 		newfile.flush()
 		newfile.close()
 
 		print "Created file-padded.tga. "
 
-	header = data[0:len_header]
-	body = data[len_header:]
+	
 
 	blockList = []
 
-	numBlocks = len(body)/dim_blocco
+	numBlocks = len(body)/dim_blocco 
+	
 	print "Number of blocks :" + str(numBlocks)
 
 	print "Creating block list.."
@@ -57,9 +63,11 @@ def create_crypted_file(chiave, filename):
 		blockList.append(body[a:b])
 
 	print "List composed of "+str(numBlocks)+" blocks created."
-
-	for i in range(0,numBlocks):
-		blockList[i] =  feistel.crypt(chiave , blockList[i])
+	
+	
+	for j in range(8):   
+		for i in range(0,numBlocks):
+			blockList[i] =  feistel.crypt(chiave , blockList[i])
 
 	newCryptedfile = open("file-crypted.tga", 'wb')
 
@@ -101,8 +109,9 @@ def create_decrypted_file(key , filename):
 		b = dim_blocco*i + dim_blocco
 		blockList.append(body[a:b])
 
-	for i in range(0,numBlocks):
-		blockList[i] =  feistel.decrypt(key , blockList[i])
+	for j in range(8):
+		for i in range(0,numBlocks):
+			blockList[i] =  feistel.decrypt(key , blockList[i])
 
 	newDeCryptedfile = open("file-decrypted.tga", 'wb')
 
