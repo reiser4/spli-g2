@@ -23,3 +23,17 @@ GIULIO:
 
 ENRICO: 
 	pagine web di cio` che trasmettono e ricevono A e B
+
+DESCRIZIONE ALGORITMO:
+    Scelta di un numero primo p grande che può essere reso pubblico
+    segliere due chiavi di cifratura ea e eb (encryption key di A e B) tc GCD(ea,p-1) = 1 e GCD(eb,p-1) = 1
+    scegliere due chiavi di decifratura da e db (decryption key di A e B) tc ea*da = 1 (mod p-1) e eb*db = 1 (mod p-1)
+    le chiavi ea, eb, da, db devono rimanere private
+    
+    Protocollo:
+    B vuole mandare ad A un messaggio M
+    B invia M1 [con M1 = M^(eb) (mod p)] ad A
+    A invia M2 [con M2 = M1^(ea) (mod p)] a B
+    B invia M3 [con M3 = M2^(db) (mod p)] ad A
+    A calcola M4 [con M4 = M3^(da) = M (mod p)] ricavando così M
+    
