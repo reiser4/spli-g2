@@ -18,7 +18,7 @@ def create_crypted_file(chiave, filename):
 	#filename = sys.argv[1]
 	dim_blocco = 4
 	symbol_padding = '0'
-	
+	len_header = 18
 	
 	print 'Opening '+filename+'...'
 	file = open(filename,'r')
@@ -41,8 +41,8 @@ def create_crypted_file(chiave, filename):
 
 		print "Created file-padded.tga. "
 
-	header = data[0:1000]
-	body = data[1000:]
+	header = data[0:len_header]
+	body = data[len_header:]
 
 	blockList = []
 
@@ -81,15 +81,15 @@ def create_decrypted_file(key , filename):
 
 	#filename = sys.argv[1]
 	dim_blocco = 4
-		
+	len_header = 18
 	print 'Opening '+filename+'...'
 	file = open(filename,'r')
 	data = file.read()
 	file.close()
 
 	blockList = []
-	header = data[0:1000]
-	body = data[1000:]
+	header = data[0:len_header]
+	body = data[len_header:]
 
 	numBlocks = len(body)/dim_blocco
 	print "Number of blocks :" + str(numBlocks)
