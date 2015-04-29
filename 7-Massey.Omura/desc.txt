@@ -36,4 +36,9 @@ DESCRIZIONE ALGORITMO:
     A invia M2 [con M2 = M1^(ea) (mod p)] a B
     B invia M3 [con M3 = M2^(db) (mod p)] ad A
     A calcola M4 [con M4 = M3^(da) = M (mod p)] ricavando così M
+
+    per il GCD https://it.wikipedia.org/wiki/Algoritmo_di_Euclide
+    Per trovare le decryption key vedere dispense di Matematica Discreta sulle congruenze lineari
+    Per il calcolo delle potenze modulari vedere https://it.wikipedia.org/wiki/Teorema_di_Eulero_%28aritmetica_modulare%29
+    
     
