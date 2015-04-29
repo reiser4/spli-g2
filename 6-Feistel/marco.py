@@ -2,7 +2,7 @@ import sys
 import os
 from random import randrange
 import utils
-#import modulo_max
+import feistel
 
 
 """
@@ -59,7 +59,7 @@ def create_crypted_file(chiave, filename):
 	###chiave = randrange(1,1024)
 
 	for i in range(0,numBlocks):
-		blockList[i] =  max_codifica(chiave , blockList[i])
+		blockList[i] =  feistel.crypt(chiave , blockList[i])
 
 	newCryptedfile = open("file-crypted.tga", 'wb')
 
@@ -96,7 +96,7 @@ def create_decrypted_file(key , filename):
 		blockList.append(data[a:b])
 
 	for i in range(0,numBlocks):
-		blockList[i] =  max_decodifica(key , blockList[i])
+		blockList[i] =  feistel.decrypt(key , blockList[i])
 
 	newDeCryptedfile = open("file-decrypted.tga", 'wb')
 	print "Writing decrypted blocks on file.."
