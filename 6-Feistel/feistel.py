@@ -1,5 +1,32 @@
  # coding=utf-8
 import hashlib
+from random import randrange
+
+def random_block(block_len):
+    bit_len = 0 #Lunghezza attuale in bit del blocco
+    block = ''
+    while bit_len < block_len:
+        block += chr(randrange(256))
+        bit_len += 8
+        
+    return block 
+    
+def correlation_block( block_list ):
+    copy_block = block_list[:]
+    for i in range(1,len(block_list)):
+        copy_block[i] = block_list[i] ^ block_list[i-1]
+        #print block_list[i], block_list[i-1], copy_block[i]
+        
+    return copy_block
+    
+def decorrelation_block(block_list):
+    
+    for i in range(1,len(block_list)):
+        #print block_list[i-1], block_list[i], block_list[i] ^ block_list[i-1]
+        block_list[i] ^= block_list[i-1]
+        
+    return block_list
+        
 
 def funzione(key, IN):
     m = hashlib.sha1() # Inizializzo SHA1
@@ -83,15 +110,30 @@ def decrypt(key,block):
     Li = hex2char(Li).zfill(2)
     Ri = hex2char(Ri).zfill(2)
     #print "decr", Li.encode('hex'), Ri.encode('hex')
-    return Li + Ri
-    
-    
+    return Li + Ri    
     
     
 def main():
     
     key = "1010100110"
     debug = 0
+    print random_block(32).encode('hex')
+    
+    prova = ''
+    for i in range(4):
+        prova += chr(0)
+        
+    print prova.encode('hex')
+    
+    block_list = [ char2hex(random_block(16)) for i in range(10) ]
+    print block_list
+    
+    block_list = correlation_block(block_list)
+    print block_list
+    block_list = decorrelation_block(block_list)
+    print block_list
+    
+    return 0
     if debug == 1:
         INPUT = "ROMA"
         
@@ -100,7 +142,8 @@ def main():
         print "OUTPUT =", OUTPUT, len(OUTPUT)
         print decrypt(key,OUTPUT)
     else:    
-        INPUT = "\x00\x00\x00\x00"
+        a= "\x00\x00\x00\x00"
+        
         print "INPUT =", INPUT.encode('hex')
         OUTPUT = crypt(key,INPUT)
         print "OUTPUT =", OUTPUT

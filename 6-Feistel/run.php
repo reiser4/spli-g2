@@ -18,7 +18,7 @@ function pythonRun($cmdline) {
 $key = mt_rand(0,1023);
 $bdec = decbin($key);
 $pad = str_pad($bdec,16,"0",STR_PAD_RIGHT);
-$binkey = substr($pad,0,5);
+$binkey = substr($pad,0,2);
 
 ?>
 <h2>Immagine iniziale:</h2>
@@ -32,7 +32,7 @@ $binkey = substr($pad,0,5);
 <h2>Immagine crittografata:</h2>
 <? printTga("file-crypted.tga"); ?>
 <h2>Ricerca della chiave: </h2>
-<? pythonRun("python bruteforce.py 5 file-padded.tga file-crypted.tga"); ?>
+<? pythonRun("python bruteforce.py 2 file-padded.tga file-crypted.tga"); ?>
 <h2>Decodifica dell'immagine: </h2>
 <? pythonRun("python marco.py decrypt $binkey file-crypted.tga"); ?>
 <br/>
