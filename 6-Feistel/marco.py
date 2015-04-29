@@ -18,7 +18,7 @@ def create_crypted_file(chiave, filename):
 	#filename = sys.argv[1]
 	dim_blocco = 4
 	symbol_padding = '0'
-	
+	len_header = 18
 	
 	print 'Opening '+filename+'...'
 	file = open(filename,'r')
@@ -41,9 +41,12 @@ def create_crypted_file(chiave, filename):
 
 		print "Created file-padded.tga. "
 
+	header = data[0:len_header]
+	body = data[len_header:]
 
 	blockList = []
-	numBlocks = len(data)/dim_blocco
+
+	numBlocks = len(body)/dim_blocco
 	print "Number of blocks :" + str(numBlocks)
 
 	print "Creating block list.."
@@ -51,17 +54,17 @@ def create_crypted_file(chiave, filename):
 		
 		a = dim_blocco*i
 		b = dim_blocco*i + dim_blocco
-		blockList.append(data[a:b])
+		blockList.append(body[a:b])
 
 	print "List composed of "+str(numBlocks)+" blocks created."
-
-	### tolto da Enrico
-	###chiave = randrange(1,1024)
 
 	for i in range(0,numBlocks):
 		blockList[i] =  feistel.crypt(chiave , blockList[i])
 
 	newCryptedfile = open("file-crypted.tga", 'wb')
+
+	print "Writing header...."
+	newCryptedfile.write(header)
 
 	print "Writing crypted blocks on file.."
 	for i in range(0,numBlocks):
@@ -78,14 +81,17 @@ def create_decrypted_file(key , filename):
 
 	#filename = sys.argv[1]
 	dim_blocco = 4
-		
+	len_header = 18
 	print 'Opening '+filename+'...'
 	file = open(filename,'r')
 	data = file.read()
 	file.close()
 
 	blockList = []
-	numBlocks = len(data)/dim_blocco
+	header = data[0:len_header]
+	body = data[len_header:]
+
+	numBlocks = len(body)/dim_blocco
 	print "Number of blocks :" + str(numBlocks)
 
 	print "Creating block list.."
@@ -93,12 +99,16 @@ def create_decrypted_file(key , filename):
 		
 		a = dim_blocco*i
 		b = dim_blocco*i + dim_blocco
-		blockList.append(data[a:b])
+		blockList.append(body[a:b])
 
 	for i in range(0,numBlocks):
 		blockList[i] =  feistel.decrypt(key , blockList[i])
 
 	newDeCryptedfile = open("file-decrypted.tga", 'wb')
+
+	print "Writing header..."
+	newDeCryptedfile.write(header)
+
 	print "Writing decrypted blocks on file.."
 	for i in range(0,numBlocks):
 		#blockList[i] =  max_codifica(chiave , blockList[i])
@@ -117,4 +127,3 @@ if sys.argv[1] == "encrypt":
 
 if sys.argv[1] == "decrypt":
 	create_decrypted_file(sys.argv[2], sys.argv[3])
-
