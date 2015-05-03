@@ -1,8 +1,7 @@
 import hashlib
 from fractions import gcd
 import sys
-
-### gcd(20,8)
+import pyprimes
 
 def md5same(md5_1, md5_2):
     if md5_1 == md5_2:
@@ -12,27 +11,6 @@ def md5same(md5_1, md5_2):
     
 def md5(filename):
     return hashlib.md5(open(filename, 'rb').read()).hexdigest()
-
-def findKeys(maxprime):
-    numbers_prime = rwh_primes1(maxprime)
-    p = numbers_prime[-1]
-    da = 0
-    db = 0
-    i = 2
-    y = 3
-    while True: 
-        da = gcd(numbers_prime[-i],p-1)
-        if da == 1:
-            ea = numbers_prime[-i]
-            break
-        i=+2
-    while True:
-        db = gcd(numbers_prime[-y],p-1)
-        if db == 1:
-            eb = numbers_prime[-y]
-            break
-        y+=2
-    return ea, eb
 
 def egcd(a, b):
     # https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
@@ -55,3 +33,4 @@ def modinv(a, m):
 
 if __name__ == "__main__":
     print modinv(43, 103)
+    print next(pyprimes.primes_above(100000000))
