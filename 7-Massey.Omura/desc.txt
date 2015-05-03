@@ -14,7 +14,7 @@ da fare con un'immagine. facciamo vedere che e` incomprensibile in tutti gli ste
 
 MAX:
 	dato in ingresso il messaggio e la chiave, codifica e fornisce il messaggio crittografato
-	
+
 MARCO: 
 	calcolo di minimo comune multiplo
 

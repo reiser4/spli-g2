@@ -16,11 +16,11 @@ if __name__ == "__main__":
     print "Attendi..."
     filename_encrypt = "file-crypted.tga"
     filename_padded = "file-padded.tga"
+    md5_padded = utils.md5(filename_padded)
     start = time.time()
     for key in map(''.join, itertools.product('01', repeat=len_key)):
         filename_decrypt = marco.create_decrypted_file(key, filename_encrypt)
-        md5_padded = utils.md5(filename_padded)
-        md5_decrypt = utils.md5(filename_decrypt)    
+        md5_decrypt = utils.md5(filename_decrypt)
         if utils.md5same(md5_padded, md5_decrypt):
             print
             print "md5 del file '" + filename_padded + "':\t" + md5_padded
