@@ -2,7 +2,6 @@ import utils
 import pyprimes
 import fractions
 import sys
-import time
 
 if __name__ == "__main__":
 
@@ -13,9 +12,7 @@ if __name__ == "__main__":
         big_number = int(sys.argv[2])
         nthprimeA = int(sys.argv[3])
         nthprimeB = int(sys.argv[4])
-    
-    start = time.time()
-    
+
     p = utils.calculateP(big_number)
     fp = p-1
 
@@ -52,5 +49,4 @@ if __name__ == "__main__":
         print "File decodificato correttamente"
     else:
         print "Il file decodificato e' diverso dall'originale'"
-    
-    print time.time() - start
+
