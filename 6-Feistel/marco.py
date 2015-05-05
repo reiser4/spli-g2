@@ -65,7 +65,7 @@ def create_crypted_file(chiave, filename):
 	print "List composed of "+str(numBlocks)+" blocks created."
 	
 	
-	for j in range(8):   
+	for j in range(2):
 		for i in range(0,numBlocks):
 			blockList[i] =  feistel.crypt(chiave , blockList[i])
 
@@ -109,7 +109,7 @@ def create_decrypted_file(key , filename):
 		b = dim_blocco*i + dim_blocco
 		blockList.append(body[a:b])
 
-	for j in range(8):
+	for j in range(2):
 		for i in range(0,numBlocks):
 			blockList[i] =  feistel.decrypt(key , blockList[i])
 

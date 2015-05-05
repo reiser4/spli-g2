@@ -2,6 +2,7 @@ import hashlib
 import fractions
 import sys
 import pyprimes
+from six import string_types
 
 def md5same(md5_1, md5_2):
     if md5_1 == md5_2:
