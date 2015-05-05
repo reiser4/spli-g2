@@ -15,14 +15,21 @@ function pythonRun($cmdline) {
 	}
 }
 
-$immage = "lena.tga";
-$immagedec = "lena_dec.tga";
-
 ?>
 <h2>Immagine iniziale:</h2>
 <? printTga("lena.tga"); ?>
 <br/><br/>
-<? pythonRun("python main.py $immage 100000000 1000 1200"); ?>
+<? pythonRun("python main.py lena.tga 10000000 1000 1200"); ?>
+<br/><br/>
+<h2>Immagine criptata da A:</h2>
+<? printTga("lena_eA.tga"); ?>
+<br/><br/>
+<h2>Immagine criptata da B:</h2>
+<? printTga("lena_eB.tga"); ?>
+<br/><br/>
+<h2>Immagine decriptata da A:</h2>
+<? printTga("lena_dA.tga"); ?>
+<br/><br/>
 <h2>Immagine decodificata: </h2>
-<? printTga($immagedec); ?>
+<? printTga("lena_dec.tga"); ?>
 

@@ -13,14 +13,16 @@ if __name__ == "__main__":
         big_number = int(sys.argv[2])
         nthprimeA = int(sys.argv[3])
         nthprimeB = int(sys.argv[4])
+    
     tstart = time.time()
+    
     p = utils.calculateP(big_number)
     fp = p-1
 
     filename_ori = filename
     filename, fileext = filename.rsplit('.', 1)
     filename_dec = filename + "_dec." + fileext
-    print filename,fileext
+
     eA = utils.calculateEncryptionKey(nthprimeA, p)
     eB = utils.calculateEncryptionKey(nthprimeB, p)
     dA = utils.modinv(eA, fp)
@@ -56,4 +58,4 @@ if __name__ == "__main__":
     else:
         print "Il file decodificato e' diverso dall'originale'"
 
-    print "Tempo impiegato:", time.time() - tstart, "secondi"
+    print "Tempo impiegato:", round(time.time() - tstart, 2), "secondi"
