@@ -60,6 +60,17 @@ def splitToHeaderBody(filename):
     body = data[lenheader:]
     return header, body
 
+def writeFileTmp(filename, header, body):
+    """
+    Il body deve essere una lista di interi perche' per ogni ciclo trasformo
+    l'intero in carattere, questo per evitare un ulteriore ciclo for'
+    """
+    #body = int2char(body)
+    fileout = open(filename,'wb')
+    fileout.write(header)
+    for b in body:
+        fileout.write(chr(b%255))
+
 def writeFile(filename, header, body):
     """
     Il body deve essere una lista di interi perche' per ogni ciclo trasformo

@@ -22,7 +22,7 @@ $immagedec = "lena_dec.tga";
 <h2>Immagine iniziale:</h2>
 <? printTga("lena.tga"); ?>
 <br/><br/>
-<? pythonRun("python main.py $immage 100000000 600 601"); ?>
+<? pythonRun("python main.py $immage 100000000 1000 1200"); ?>
 <h2>Immagine decodificata: </h2>
 <? printTga($immagedec); ?>
 
