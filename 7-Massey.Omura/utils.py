@@ -51,6 +51,49 @@ def calculateEncryptionKey(nthprime, p):
         e = pyprimes.nth_prime(nthprime)
     return e
 
+def splitToHeaderBody(filename):
+    lenheader = 18
+    fileinput = open(filename,'rb')
+    data = fileinput.read()
+    fileinput.close()
+    header = data[0:lenheader]
+    body = data[lenheader:]
+    return header, body
+
+def writeFile(filename, header, body):
+    """
+    Il body deve essere una lista di interi perche' per ogni ciclo trasformo
+    l'intero in carattere, questo per evitare un ulteriore ciclo for'
+    """
+    #body = int2char(body)
+    fileout = open(filename,'wb')
+    fileout.write(header)
+    for b in body:
+        fileout.write(chr(b))
+
+def int2char(intlist):
+    tmp = list()
+    for i in intlist:
+        tmp.append(chr(i))
+    return tmp
+
+def char2int(charlist, p):
+    tmp = list()
+    for c in charlist:
+        res = ord(c)
+        if res > p:
+            sys.exit("L'intero:", b, "e' maggiore della chiave p:", p, ", aumentare la chiave'")
+        tmp.append(res)
+    return tmp
+
+def algorithm(message, k, p):
+    tmp = list()
+    for m in message:
+        tmp.append(pow(m, k, p))
+    return tmp
+
 if __name__ == "__main__":
     print modinv(43, 103)
     print next(pyprimes.primes_above(100000000))
+
+

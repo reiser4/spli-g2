@@ -41,7 +41,7 @@ def funzione(key, IN):
     return res
     
 
-def char2hex(char_type):   
+def char2hex(char_type):
     res = 0
     for i in char_type:
         res <<= 8

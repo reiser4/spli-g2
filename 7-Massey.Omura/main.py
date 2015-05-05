@@ -2,45 +2,50 @@ import utils
 import pyprimes
 import fractions
 import sys
-import marco
-import feistel
 
 if __name__ == "__main__":
-    iA = 100
-    iB = 101
-    p = utils.calculateP(100000)
+
+    if len(sys.argv) != 5:
+        sys.exit("Per eseguire correttamente: 'python main.py filename big_number nth_prime_for_A nth_prime_for_B'")
+    else:
+        filename = sys.argv[1]
+        big_number = int(sys.argv[2])
+        nthprimeA = int(sys.argv[3])
+        nthprimeB = int(sys.argv[4])
+
+    p = utils.calculateP(big_number)
     fp = p-1
-    
-    eA = utils.calculateEncryptionKey(100, p)
-    eB = utils.calculateEncryptionKey(101, p)
+
+    filename_ori = filename
+    filename, fileext = filename.rsplit('.', 1)
+    print filename,fileext
+    eA = utils.calculateEncryptionKey(nthprimeA, p)
+    eB = utils.calculateEncryptionKey(nthprimeB, p)
     dA = utils.modinv(eA, fp)
     dB = utils.modinv(eB, fp)
+    print "Encryption key A:", '{0:,}'.format(eA)
+    print "Encryption key B:", '{0:,}'.format(eB)
+    print "Decryption key A:", '{0:,}'.format(dA)
+    print "Decryption key B:", '{0:,}'.format(dB)
+    print "Prime number:", '{0:,}'.format(p)
+
+    (header, body) = utils.splitToHeaderBody(filename_ori)
     
-    (header, body) = marco.create_crypted_file(eA, "lena.tga")
-    body1 = list()
-    for b in body:
-        b = str(b)
-        res = b.encode('hex')
-        res = int(res,16)
-        body.append(pow(res, eA, p))
+    body = utils.char2int(body, p)
+
+    print "A -> B"
+    body1AtoB = utils.algorithm(body, eA, p)
+    print "B -> A"
+    body1BtoA = utils.algorithm(body1AtoB, eB, p)
+    print "A -> B"
+    body2AtoB = utils.algorithm(body1BtoA, dA, p)
+    print "B -> A"
+    body2BtoA = utils.algorithm(body2AtoB, dB, p)
     
-    f_body1 = open("lena1.tga", 'wb')
-    f_body1.write(header)
-    for b in body1:
-        #blockList[i] =  max_codifica(chiave , blockList[i])
-        res = hex(b)[2:]
-        f_body1.write(res)
-    f_body1.flush()
-    f_body1.close()
+    filename_dec = filename + "_dec." + fileext
+    utils.writeFile(filename_dec, header, body2BtoA)
     
-    print eA, eB, dA, dB
-    m = 14646
-    print m
-    m1 = pow(m, eA, p)
-    print m1
-    m2 = pow(m1, eB, p)
-    print m2
-    m3 = pow(m2, dA, p)
-    print m3
-    m4 = pow(m3, dB, p)
-    print m4
+    if utils.md5same(utils.md5(filename_ori), utils.md5(filename_dec)):
+        print "File decodificato correttamente"
+    else:
+        print "Il file decodificato e' diverso dall'originale'"

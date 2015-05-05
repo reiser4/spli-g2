@@ -19,16 +19,18 @@ if __name__ == "__main__":
     md5_padded = utils.md5(filename_padded)
     start = time.time()
     for key in map(''.join, itertools.product('01', repeat=len_key)):
+        print "Provo con la chiave: '" + str(key) + "'"
         filename_decrypt = marco.create_decrypted_file(key, filename_encrypt)
         md5_decrypt = utils.md5(filename_decrypt)
         if utils.md5same(md5_padded, md5_decrypt):
             print
-            print "md5 del file '" + filename_padded + "':\t" + md5_padded
+            print "md5 del file '" + filename_padded + "':\t\t" + md5_padded
             print "md5 del file '" + filename_decrypt + "':\t" + md5_decrypt
-            time = round(time.time() - start, 2)
+            timeexe = round(time.time() - start, 2)
             print "La chiave del tesoro e': '" + str(key) + "', lunghezza " + str(len(key)) + " bit"
-            print "E' stata trovata in: " + str(time) + " secondi"
+            print "E' stata trovata in: " + str(timeexe) + " secondi"
             break
         else:
-            print "Ho provato con chiave: '" + str(key) + "'"
+            print "L'attacco non e' andato a buon fine"
+            print
     print "\nJob done, goodbye"
