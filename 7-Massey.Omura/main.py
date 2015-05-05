@@ -23,11 +23,11 @@ if __name__ == "__main__":
     eB = utils.calculateEncryptionKey(nthprimeB, p)
     dA = utils.modinv(eA, fp)
     dB = utils.modinv(eB, fp)
+    print "Prime number:", '{0:,}'.format(p)
     print "Encryption key A:", '{0:,}'.format(eA)
     print "Encryption key B:", '{0:,}'.format(eB)
     print "Decryption key A:", '{0:,}'.format(dA)
     print "Decryption key B:", '{0:,}'.format(dB)
-    print "Prime number:", '{0:,}'.format(p)
 
     (header, body) = utils.splitToHeaderBody(filename_ori)
     
