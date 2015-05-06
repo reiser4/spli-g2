@@ -30,6 +30,7 @@ if __name__ == "__main__":
     d = utils.modinv(e, fn)
     #dB = utils.modinv(eB, fp)
     print "Prime number:", '{0:,}'.format(p)
+    print "N:", n
     print "Encryption key A:", '{0:,}'.format(e)
     #print "Encryption key B:", '{0:,}'.format(eB)
     print "Decryption key A:", '{0:,}'.format(d)
@@ -47,7 +48,7 @@ if __name__ == "__main__":
     #body1BtoA = utils.algorithm(body1AtoB, eB, p)
     #utils.writeFileTmp(filename + "_eB." + fileext, header, body1BtoA)
     
-    print "A -decrypt-> B"
+    print "B -decrypt-> A"
     body2AtoB = utils.algorithm(body1AtoB, d, n)
     utils.writeFileTmp(filename + "_dA." + fileext, header, body2AtoB)
     

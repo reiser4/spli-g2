@@ -37,7 +37,7 @@ def calculateP(n):
     Prende in ingresso un numero 'n' 
     restituisce il numero primo successivo a 'n'
     """
-    return next(pyprimes.primes_above(n))
+    return pyprimes.next_prime(n)
     
 def calculateEncryptionKey(nthprime, p):
     """
@@ -105,6 +105,6 @@ def algorithm(message, k, p):
 
 if __name__ == "__main__":
     print modinv(43, 103)
-    print next(pyprimes.primes_above(100000000))
+    print pyprimes.next_prime(100000000)
 
 

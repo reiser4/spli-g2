@@ -24,7 +24,7 @@ $binkey = substr($pad,0,4);
 <h2>Immagine iniziale:</h2>
 <? printTga("lena.tga"); ?>
 <br/><br/>
-<h2>Eseguo crittografia con chiave <?=$binkey ?>
+<h2>Eseguo crittografia con chiave <?=$binkey ?><h2>
 <br/>
 <? pythonRun("python marco.py encrypt $binkey lena.tga"); ?>
 <h2>Immagine paddata:</h2>
