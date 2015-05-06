@@ -1,6 +1,6 @@
 #!/bin/sh
 
-php run.php > out.html
+php run.php | tee out.html
 
 ## per MAC
 if [ "$(uname)" = "Darwin" ]

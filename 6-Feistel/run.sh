@@ -4,7 +4,7 @@ echo "Richiede imagemagick: "
 echo "$ sudo apt-get install imagemagick"
 
 
-php run.php > out.html
+php run.php | tee out.html
 
 ## per MAC
 if [ "$(uname)" = "Darwin" ]

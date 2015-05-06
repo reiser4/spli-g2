@@ -70,6 +70,8 @@ def writeFileTmp(filename, header, body):
     fileout.write(header)
     for b in body:
         fileout.write(chr(b%256))
+    fileout.flush()
+    fileout.close
 
 def writeFile(filename, header, body):
     """
