@@ -1,0 +1,44 @@
+
+ciascuno ha una chiave che non comunica al corrispondente (chiave A e B potrebbero essere stringhe casuali)
+
+A invia un messaggio a B,
+B cifra di nuovo il messaggio e lo rimanda a A
+A decifra il messaggio e lo manda a B
+B inverte due volte la cifratura sul messaggio ricevuto (cifrato due volte), se tutto va bene ottiene il messaggio m
+
+difficolta`: trovare una funzione invertibile (es. modulo)
+
+da fare con un'immagine. facciamo vedere che e` incomprensibile in tutti gli step tranne nel primo e l'ultimo.
+
+
+
+MAX:
+	dato in ingresso il messaggio e la chiave, codifica e fornisce il messaggio crittografato
+
+MARCO: 
+	calcolo di minimo comune multiplo
+
+GIULIO:
+	potenze modulari (algoritmo euclideo)
+
+ENRICO: 
+	pagine web di cio` che trasmettono e ricevono A e B
+
+DESCRIZIONE ALGORITMO:
+    Scelta di un numero primo p grande che può essere reso pubblico
+    segliere due chiavi di cifratura ea e eb (encryption key di A e B) tc GCD(ea,p-1) = 1 e GCD(eb,p-1) = 1
+    scegliere due chiavi di decifratura da e db (decryption key di A e B) tc ea*da = 1 (mod p-1) e eb*db = 1 (mod p-1)
+    le chiavi ea, eb, da, db devono rimanere private
+    
+    Protocollo:
+    B vuole mandare ad A un messaggio M
+    B invia M1 [con M1 = M^(eb) (mod p)] ad A
+    A invia M2 [con M2 = M1^(ea) (mod p)] a B
+    B invia M3 [con M3 = M2^(db) (mod p)] ad A
+    A calcola M4 [con M4 = M3^(da) = M (mod p)] ricavando così M
+
+    per il GCD https://it.wikipedia.org/wiki/Algoritmo_di_Euclide
+    Per trovare le decryption key vedere dispense di Matematica Discreta sulle congruenze lineari
+    Per il calcolo delle potenze modulari vedere https://it.wikipedia.org/wiki/Teorema_di_Eulero_%28aritmetica_modulare%29
+    
+    
