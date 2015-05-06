@@ -21,7 +21,7 @@ def create_crypted_file(chiave, filename):
 
     ## prendi un parametro della funzione e poi lo sovrascrivi??
     #filename = sys.argv[1]
-    dim_blocco = 4
+    dim_blocco = 4 #dim in byte
     symbol_padding = '0'
     len_header = 18
     
