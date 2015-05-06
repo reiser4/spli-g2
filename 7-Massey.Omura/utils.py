@@ -69,7 +69,7 @@ def writeFileTmp(filename, header, body):
     fileout = open(filename,'wb')
     fileout.write(header)
     for b in body:
-        fileout.write(chr(b%255))
+        fileout.write(chr(b%256))
 
 def writeFile(filename, header, body):
     """
@@ -93,7 +93,7 @@ def char2int(charlist, p):
     for c in charlist:
         res = ord(c)
         if res > p:
-            sys.exit("L'intero:", b, "e' maggiore della chiave p:", p, ", aumentare la chiave'")
+            sys.exit("L'intero:", cX, "e' maggiore della chiave p:", p, ", aumentare la chiave'")
         tmp.append(res)
     return tmp
 

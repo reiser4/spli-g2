@@ -19,9 +19,7 @@ if __name__ == "__main__":
     md5_ori = utils.md5(filename_ori)
     start = time.time()
     
-    list_primes = list(pyprimes.primes(2, 1024))
-    #print list_primes
-    for key in list_primes:
+    for key in range(960, 1024):
         print "Provo con la chiave: '" + str(key) + "'"
         body1 = utils.algorithm(body, key, n)
         utils.writeFileTmp(filename_bruteforce, header, body1)

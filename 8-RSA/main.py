@@ -40,7 +40,7 @@ if __name__ == "__main__":
     
     body = utils.char2int(body, n)
 
-    print "A -encrypt-> B"
+    print "A encrypt"
     body1AtoB = utils.algorithm(body, e, n)
     utils.writeFileTmp(filename + "_eA." + fileext, header, body1AtoB)
     
@@ -48,15 +48,15 @@ if __name__ == "__main__":
     #body1BtoA = utils.algorithm(body1AtoB, eB, p)
     #utils.writeFileTmp(filename + "_eB." + fileext, header, body1BtoA)
     
-    print "B -decrypt-> A"
+    print "B decrypt"
     body2AtoB = utils.algorithm(body1AtoB, d, n)
-    utils.writeFileTmp(filename + "_dA." + fileext, header, body2AtoB)
+    utils.writeFile(filename + "_dA." + fileext, header, body2AtoB)
     
     #print "B -decrypt-> A"
     #body2BtoA = utils.algorithm(body2AtoB, dB, p)
     #utils.writeFile(filename_dec, header, body2BtoA)
     
-    if utils.md5same(utils.md5(filename_ori), utils.md5(filename_dec)):
+    if utils.md5same(utils.md5(filename_ori), utils.md5(filename + "_dA." + fileext)):
         print "File decodificato correttamente"
     else:
         print "Il file decodificato e' diverso dall'originale'"
