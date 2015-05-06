@@ -92,6 +92,24 @@ def writeFile(filename, header, body):
     fileout.flush()
     fileout.close()
 
+def padding(body, dim_blocco):
+    symbol_padding = '0'
+    module = len(body) % dim_blocco
+    padding = dim_blocco - module
+    
+    if padding > 0:
+        body = body.ljust(len(body)+padding,symbol_padding)
+
+    
+
+def chunkBody(body, len_chunk):
+    block_list = list()
+    for i in range (len(body)/len_chunk):
+        block_list.append(body[i*len_chunk:(i+1)*len_chunk])
+        
+    return block_list
+    
+
 def int2char(intlist):
     tmp = list()
     for i in intlist:
