@@ -71,7 +71,13 @@ def writeFileTmp(filename, header, body):
     for b in body:
         fileout.write(chr(b%256))
     fileout.flush()
-    fileout.close
+    fileout.close()
+    
+    fileoutint = open(filename + "-int",'wb')
+    for b in body:
+        fileoutint.write(str(b) + " ")
+    fileoutint.flush()
+    fileoutint.close()
 
 def writeFile(filename, header, body):
     """
@@ -84,7 +90,7 @@ def writeFile(filename, header, body):
     for b in body:
         fileout.write(chr(b))
     fileout.flush()
-    fileout.close
+    fileout.close()
 
 def int2char(intlist):
     tmp = list()

@@ -14,12 +14,23 @@ if __name__ == "__main__":
     print "Attendi..."
     
     (header, body) = utils.splitToHeaderBody(filename_encrypt)
-    body = utils.char2int(body, n)
+    #body = utils.char2int(body, n)
+    
+    
+    intfile = open(filename_encrypt + "-int",'rb')
+    cbody = intfile.read()
+    ibody = cbody.split(" ")
+    body = list()
+    for integer in ibody:
+        if integer != "":
+            body.append(int(integer))
+    intfile.close()
+    
     
     md5_ori = utils.md5(filename_ori)
     start = time.time()
     
-    for key in range(960, 1024):
+    for key in range(970, 1024):
         print "Provo con la chiave: '" + str(key) + "'"
         body1 = utils.algorithm(body, key, n)
         utils.writeFileTmp(filename_bruteforce, header, body1)
@@ -28,7 +39,7 @@ if __name__ == "__main__":
             print
             print "md5 del file '" + filename_ori + "':\t\t" + md5_ori
             print "md5 del file '" + filename_bruteforce + "':\t" + md5_bruteforce
-            print "La chiave del tesoro e': '" + str(key) + "', lunghezza " + str(len(key)) + " bit"
+            print "La chiave del tesoro e': '" + str(key) + "'"
             print "E' stata trovata in: " + str(round(time.time() - start, 2)) + " secondi"
             break
         else:

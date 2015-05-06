@@ -1,7 +1,9 @@
 <h2>Immagine iniziale:</h2>
 <img src="lena.tga.jpg"><br/><br/>
-$ python main.py lena.tga 10000000 1000 1200<br/>&gt;&gt;&gt; Prime number: 10,000,019<br/>&gt;&gt;&gt; N: 10090019171<br/>&gt;&gt;&gt; Encryption key A: 9,733<br/>&gt;&gt;&gt; Decryption key A: 1,535,874,541<br/>&gt;&gt;&gt; A encrypt<br/>&gt;&gt;&gt; B decrypt<br/>&gt;&gt;&gt; File decodificato correttamente<br/>&gt;&gt;&gt; Tempo impiegato: 11.69 secondi<br/><br/>
+$ python main.py lena.tga 100 11 12<br/>&gt;&gt;&gt; Prime number: 101<br/>&gt;&gt;&gt; N: 1313<br/>&gt;&gt;&gt; Encryption key A: 37<br/>&gt;&gt;&gt; Decryption key A: 973<br/>&gt;&gt;&gt; A encrypt<br/>&gt;&gt;&gt; B decrypt<br/>&gt;&gt;&gt; File decodificato correttamente<br/>&gt;&gt;&gt; Tempo impiegato: 2.01 secondi<br/><br/>
 <h2>Immagine criptata da A:</h2>
 <img src="lena_eA.tga.jpg"><br/><br/>
 <h2>Immagine decriptata da B:</h2>
 <img src="lena_dA.tga.jpg">
+<br/><br/>
+$ python bruteforce.py 1313<br/>&gt;&gt;&gt; Welcome to the party<br/>&gt;&gt;&gt; <br/>&gt;&gt;&gt; Inizio l'attacco<br/>&gt;&gt;&gt; Attendi...<br/>&gt;&gt;&gt; Provo con la chiave: '970'<br/>&gt;&gt;&gt; L'attacco non e' andato a buon fine<br/>&gt;&gt;&gt; <br/>&gt;&gt;&gt; Provo con la chiave: '971'<br/>&gt;&gt;&gt; L'attacco non e' andato a buon fine<br/>&gt;&gt;&gt; <br/>&gt;&gt;&gt; Provo con la chiave: '972'<br/>&gt;&gt;&gt; L'attacco non e' andato a buon fine<br/>&gt;&gt;&gt; <br/>&gt;&gt;&gt; Provo con la chiave: '973'<br/>&gt;&gt;&gt; <br/>&gt;&gt;&gt; md5 del file 'lena.tga':		3c733ab519a1b43b1a54a82b13af4fe2<br/>&gt;&gt;&gt; md5 del file 'lena_bruteforce.tga':	3c733ab519a1b43b1a54a82b13af4fe2<br/>&gt;&gt;&gt; La chiave del tesoro e': '973'<br/>&gt;&gt;&gt; E' stata trovata in: 4.73 secondi<br/>&gt;&gt;&gt; <br/>&gt;&gt;&gt; Job done, goodbye
