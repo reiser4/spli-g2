@@ -38,10 +38,18 @@ if __name__ == "__main__":
 
     (header, body) = utils.splitToHeaderBody(filename_ori)
     
-    body = utils.char2int(body, n)
+    #TODO: Fare Padding (Del body)
+    #TODO: Salvare l'immagine paddata
+    #TODO: Dividere in blocchi il body
+    #TODO: Ora blocchi e' una stringa di ascii 
+    #      e' meglio trasformare i blocchi nel loro corrispettivo intero 
+    
+    body = utils.char2int(body, n) #TODO: Questo verrà cancellato
 
+    # Inizio Cifratura
     print "A encrypt"
-    body1AtoB = utils.algorithm(body, e, n)
+    body1AtoB = utils.algorithm(body, e, n) # Qui passiamo la lista di blocchi
+                                            # già trasformata in interi
     utils.writeFileTmp(filename + "_eA." + fileext, header, body1AtoB)
     
     #print "B -encrypt-> A"
