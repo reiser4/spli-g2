@@ -76,8 +76,9 @@ def writeFileTmp(filename, header, body):
         #print type(binascii.a2b_hex(b)), binascii.a2b_hex(b)
        
         if hex(b)[-1] != 'L':
-            print "ALT!"
-        res = hex(b)[2:-1]
+            res = hex(b)[2:]
+        else:
+            res = hex(b)[2:-1] # hex() mi riestitusce qualcosa che inizia con 0x e finisce con L
         if len(res) % 2 != 0:
             res = '0' + res
         #print "RES: ",res
@@ -109,8 +110,9 @@ def writeFile(filename, header, body):
     for b in body:
         #fileout.write(chr(b))
         if hex(b)[-1] != 'L':
-            print "ALT!"
-        res = hex(b)[2:-1]
+            res = hex(b)[2:]
+        else:
+            res = hex(b)[2:-1] # hex() mi riestitusce qualcosa che inizia con 0x e finisce con L
         if len(res) % 2 != 0:
             res = '0' + res
         for i in range(len(res)/2):
