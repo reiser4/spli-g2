@@ -14,6 +14,8 @@ if __name__ == "__main__":
         big_number2 = int(sys.argv[3])
         nthprime = int(sys.argv[4])
     
+    dim_blocco = 4
+    
     tstart = time.time()
     
     p = utils.calculateP(big_number1)
@@ -38,18 +40,25 @@ if __name__ == "__main__":
 
     (header, body) = utils.splitToHeaderBody(filename_ori)
     
+    body = utils.padding(body, dim_blocco)
+    
+    utils.writePadding("file-paddato.tga",header,body)
+    
+    body_list = utils.chunkBody(body, dim_blocco)
+    
+    
     #TODO: Fare Padding (Del body)
     #TODO: Salvare l'immagine paddata
     #TODO: Dividere in blocchi il body
     #TODO: Ora blocchi e' una stringa di ascii 
     #      e' meglio trasformare i blocchi nel loro corrispettivo intero 
     
-    body = utils.char2int(body, n) #TODO: Questo verrà cancellato
+    body_num = utils.char2int(body_list, n) #TODO: Questo verra' cancellato
 
     # Inizio Cifratura
     print "A encrypt"
-    body1AtoB = utils.algorithm(body, e, n) # Qui passiamo la lista di blocchi
-                                            # già trasformata in interi
+    body1AtoB = utils.algorithm(body_num, e, n) # Qui passiamo la lista di blocchi
+    print len(body1AtoB)                                            # gia'' trasformata in interi
     utils.writeFileTmp(filename + "_eA." + fileext, header, body1AtoB)
     
     #print "B -encrypt-> A"
@@ -58,13 +67,14 @@ if __name__ == "__main__":
     
     print "B decrypt"
     body2AtoB = utils.algorithm(body1AtoB, d, n)
+    print len(body2AtoB)
     utils.writeFile(filename + "_dA." + fileext, header, body2AtoB)
     
     #print "B -decrypt-> A"
     #body2BtoA = utils.algorithm(body2AtoB, dB, p)
     #utils.writeFile(filename_dec, header, body2BtoA)
     
-    if utils.md5same(utils.md5(filename_ori), utils.md5(filename + "_dA." + fileext)):
+    if utils.md5same(utils.md5("file-paddato.tga"), utils.md5(filename + "_dA." + fileext)):
         print "File decodificato correttamente"
     else:
         print "Il file decodificato e' diverso dall'originale'"

@@ -2,6 +2,7 @@ import hashlib
 import fractions
 import sys
 import pyprimes
+import binascii
 
 def md5same(md5_1, md5_2):
     if md5_1 == md5_2:
@@ -68,16 +69,33 @@ def writeFileTmp(filename, header, body):
     #body = int2char(body)
     fileout = open(filename,'wb')
     fileout.write(header)
+    n_byte = 0
+    
     for b in body:
-        fileout.write(chr(b%256))
+#        fileout.write(chr(b%(256))
+        #print type(binascii.a2b_hex(b)), binascii.a2b_hex(b)
+       
+        if hex(b)[-1] != 'L':
+            print "ALT!"
+        res = hex(b)[2:-1]
+        if len(res) % 2 != 0:
+            res = '0' + res
+        #print "RES: ",res
+        for i in range(len(res)/2):
+            #print res[2*i:(2*i)+2], binascii.a2b_hex(res[2*i:(2*i)+2])
+            fileout.write(binascii.a2b_hex(res[2*i:(2*i)+2]))
+            n_byte += 1
     fileout.flush()
     fileout.close()
+    print "SCRITTI ", n_byte, "byte"
     
     fileoutint = open(filename + "-int",'wb')
     for b in body:
         fileoutint.write(str(b) + " ")
     fileoutint.flush()
     fileoutint.close()
+
+
 
 def writeFile(filename, header, body):
     """
@@ -87,10 +105,22 @@ def writeFile(filename, header, body):
     #body = int2char(body)
     fileout = open(filename,'wb')
     fileout.write(header)
+    n_byte = 0
     for b in body:
-        fileout.write(chr(b))
+        #fileout.write(chr(b))
+        if hex(b)[-1] != 'L':
+            print "ALT!"
+        res = hex(b)[2:-1]
+        if len(res) % 2 != 0:
+            res = '0' + res
+        for i in range(len(res)/2):
+            #print res[2*i:(2*i)+2], binascii.a2b_hex(res[2*i:(2*i)+2])
+            fileout.write(binascii.a2b_hex(res[2*i:(2*i)+2]))
+            n_byte += 1
+        #fileout.write(res)
     fileout.flush()
     fileout.close()
+    print "Scritti", n_byte, "byte"
 
 def padding(body, dim_blocco):
     symbol_padding = '0'
@@ -99,7 +129,14 @@ def padding(body, dim_blocco):
     
     if padding > 0:
         body = body.ljust(len(body)+padding,symbol_padding)
+      
+    return body
 
+def writePadding(filename, header, body):
+    fileout = open(filename,'wb')
+    fileout.write(header)
+    fileout.write(body)
+    fileout.close()
     
 
 def chunkBody(body, len_chunk):
@@ -117,12 +154,23 @@ def int2char(intlist):
     return tmp
 
 def char2int(charlist, p):
+#    tmp = list()
+#    for c in charlist:
+#        res = ord(c)
+#        if res > p:
+#            sys.exit("L'intero:", c, "e' maggiore della chiave p:", p, ", aumentare la chiave'")
+#        tmp.append(res)
+#    return tmp
     tmp = list()
-    for c in charlist:
-        res = ord(c)
+    for word in charlist:
+        res = binascii.b2a_hex(word)
+        res = int(res,16)
         if res > p:
-            sys.exit("L'intero:", c, "e' maggiore della chiave p:", p, ", aumentare la chiave'")
+            #sys.exit("L'intero:", res, "e' maggiore della chiave p:", p, ", aumentare la chiave'")
+            print res, p
+            sys.exit("uscito")
         tmp.append(res)
+        
     return tmp
 
 def algorithm(message, k, p):
