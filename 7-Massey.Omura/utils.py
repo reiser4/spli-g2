@@ -2,6 +2,7 @@ import hashlib
 import fractions
 import sys
 import pyprimes
+import binascii
 
 def md5same(md5_1, md5_2):
     if md5_1 == md5_2:
@@ -10,7 +11,7 @@ def md5same(md5_1, md5_2):
     else:
         #sys.exit("Ops, i due file non sono uguali -> EXIT")
         return False
-    
+
 def md5(filename):
     return hashlib.md5(open(filename, 'rb').read()).hexdigest()
 
@@ -34,11 +35,11 @@ def modinv(a, m):
 
 def calculateP(n):
     """
-    Prende in ingresso un numero 'n' 
+    Prende in ingresso un numero 'n'
     restituisce il numero primo successivo a 'n'
     """
     return pyprimes.next_prime(n)
-    
+
 def calculateEncryptionKey(nthprime, p):
     """
     Prende in ingresso la posizione del numero primo che si vuole calcolare (se passo 10, prendo il decimo numero primo) e 'p'
@@ -60,31 +61,76 @@ def splitToHeaderBody(filename):
     body = data[lenheader:]
     return header, body
 
-def writeFileTmp(filename, header, body):
+def writeFileDec(filename, header, body, dim_blocco):
     """
     Il body deve essere una lista di interi perche' per ogni ciclo trasformo
     l'intero in carattere, questo per evitare un ulteriore ciclo for'
     """
-    #body = int2char(body)
     fileout = open(filename,'wb')
     fileout.write(header)
+    n_byte = 0
     for b in body:
-        fileout.write(chr(b%256))
+        #fileout.write(chr(b%(256)))
+        #print type(binascii.a2b_hex(b)), binascii.a2b_hex(b)
+        b = b % pow(2,dim_blocco*8)
+        #print b % pow(2,dim_blocco*8), " - " , b%256
+        if hex(b)[-1] != 'L':
+            res = hex(b)[2:]
+        else:
+            res = hex(b)[2:-1] # hex() mi riestitusce qualcosa che inizia con 0x e finisce con L
+        if len(res) % 2 != 0:
+            res = '0' + res
+        #print "RES: ",res
+        for i in range(len(res)/2):
+            #print res[2*i:(2*i)+2], binascii.a2b_hex(res[2*i:(2*i)+2])
+            fileout.write(binascii.a2b_hex(res[2*i:(2*i)+2]))
+            n_byte += 1
     fileout.flush()
-    fileout.close
+    fileout.close()
+    #print "SCRITTI ", n_byte, "byte"
 
 def writeFile(filename, header, body):
     """
     Il body deve essere una lista di interi perche' per ogni ciclo trasformo
     l'intero in carattere, questo per evitare un ulteriore ciclo for'
     """
-    #body = int2char(body)
     fileout = open(filename,'wb')
     fileout.write(header)
+    n_byte = 0
     for b in body:
-        fileout.write(chr(b))
+        if hex(b)[-1] != 'L':
+            res = hex(b)[2:]
+        else:
+            res = hex(b)[2:-1] # hex() mi riestitusce qualcosa che inizia con 0x e finisce con L
+        if len(res) % 2 != 0:
+            res = '0' + res
+        for i in range(len(res)/2):
+            #print res[2*i:(2*i)+2], binascii.a2b_hex(res[2*i:(2*i)+2])
+            fileout.write(binascii.a2b_hex(res[2*i:(2*i)+2]))
+            n_byte += 1
     fileout.flush()
-    fileout.close
+    fileout.close()
+    #print "Scritti", n_byte, "byte"
+
+def padding(body, dim_blocco):
+    symbol_padding = '0'
+    module = len(body) % dim_blocco
+    padding = dim_blocco - module
+    if padding > 0:
+        body = body.ljust(len(body) + padding, symbol_padding)
+    return body
+
+def writePadding(filename, header, body):
+    fileout = open(filename, 'wb')
+    fileout.write(header)
+    fileout.write(body)
+    fileout.close()
+
+def chunkBody(body, len_chunk):
+    block_list = list()
+    for i in range (len(body) / len_chunk):
+        block_list.append(body[i*len_chunk:(i+1)*len_chunk])
+    return block_list
 
 def int2char(intlist):
     tmp = list()
@@ -94,10 +140,11 @@ def int2char(intlist):
 
 def char2int(charlist, p):
     tmp = list()
-    for c in charlist:
-        res = ord(c)
+    for word in charlist:
+        res = binascii.b2a_hex(word)
+        res = int(res,16)
         if res > p:
-            sys.exit("L'intero:", cX, "e' maggiore della chiave p:", p, ", aumentare la chiave'")
+            sys.exit("ERRORE: L'intero: " + '{0:,}'.format(res) + " e' maggiore della chiave p: " + '{0:,}'.format(p) + ". Aumentare p")
         tmp.append(res)
     return tmp
 
@@ -107,8 +154,13 @@ def algorithm(message, k, p):
         tmp.append(pow(m, k, p))
     return tmp
 
+def phi(n):
+    amount = 0
+    for k in range(1, n + 1):
+        if fractions.gcd(n, k) == 1:
+            amount += 1
+    return amount
+
 if __name__ == "__main__":
     print modinv(43, 103)
     print pyprimes.next_prime(100000000)
-
-

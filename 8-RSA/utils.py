@@ -11,7 +11,7 @@ def md5same(md5_1, md5_2):
     else:
         #sys.exit("Ops, i due file non sono uguali -> EXIT")
         return False
-    
+
 def md5(filename):
     return hashlib.md5(open(filename, 'rb').read()).hexdigest()
 
@@ -35,19 +35,18 @@ def modinv(a, m):
 
 def calculateP(n):
     """
-    Prende in ingresso un numero 'n' 
+    Prende in ingresso un numero 'n'
     restituisce il numero primo successivo a 'n'
     """
     return pyprimes.next_prime(n)
-    
-def calculateEncryptionKey(nthprime, fp):
+
+def calculateEncryptionKey(nthprime, fn):
     """
     Prende in ingresso la posizione del numero primo che si vuole calcolare (se passo 10, prendo il decimo numero primo) e 'p'
-    restituisce 'e' ovvero un numero primo diverso da p-1 e che sia primo con quest'ultimo
+    restituisce 'e' ovvero un numero primo diverso da fn e che sia primo con quest'ultimo
     """
     e = pyprimes.nth_prime(nthprime)
-    #fp = p-1
-    while e == fp or fractions.gcd(e, fp) != 1:
+    while e == fn or fractions.gcd(e, fn) != 1:
         nthprime += 2
         e = pyprimes.nth_prime(nthprime)
     return e
@@ -61,20 +60,19 @@ def splitToHeaderBody(filename):
     body = data[lenheader:]
     return header, body
 
-def writeFileTmp(filename, header, body, dim_blocco):
+def writeFileDec(filename, header, body, dim_blocco):
     """
     Il body deve essere una lista di interi perche' per ogni ciclo trasformo
     l'intero in carattere, questo per evitare un ulteriore ciclo for'
     """
-    #body = int2char(body)
     fileout = open(filename,'wb')
     fileout.write(header)
     n_byte = 0
-    
     for b in body:
-#        fileout.write(chr(b%(256))
+        #fileout.write(chr(b%(256)))
         #print type(binascii.a2b_hex(b)), binascii.a2b_hex(b)
         b = b % pow(2,dim_blocco*8)
+        #print b % pow(2,dim_blocco*8), " - " , b%256
         if hex(b)[-1] != 'L':
             res = hex(b)[2:]
         else:
@@ -88,27 +86,17 @@ def writeFileTmp(filename, header, body, dim_blocco):
             n_byte += 1
     fileout.flush()
     fileout.close()
-    print "SCRITTI ", n_byte, "byte"
-    
-    fileoutint = open(filename + "-int",'wb')
-    for b in body:
-        fileoutint.write(str(b) + " ")
-    fileoutint.flush()
-    fileoutint.close()
-
-
+    #print "SCRITTI ", n_byte, "byte"
 
 def writeFile(filename, header, body):
     """
     Il body deve essere una lista di interi perche' per ogni ciclo trasformo
     l'intero in carattere, questo per evitare un ulteriore ciclo for'
     """
-    #body = int2char(body)
     fileout = open(filename,'wb')
     fileout.write(header)
     n_byte = 0
     for b in body:
-        #fileout.write(chr(b))
         if hex(b)[-1] != 'L':
             res = hex(b)[2:]
         else:
@@ -119,35 +107,29 @@ def writeFile(filename, header, body):
             #print res[2*i:(2*i)+2], binascii.a2b_hex(res[2*i:(2*i)+2])
             fileout.write(binascii.a2b_hex(res[2*i:(2*i)+2]))
             n_byte += 1
-        #fileout.write(res)
     fileout.flush()
     fileout.close()
-    print "Scritti", n_byte, "byte"
+    #print "Scritti", n_byte, "byte"
 
 def padding(body, dim_blocco):
     symbol_padding = '0'
     module = len(body) % dim_blocco
     padding = dim_blocco - module
-    
     if padding > 0:
-        body = body.ljust(len(body)+padding,symbol_padding)
-      
+        body = body.ljust(len(body) + padding, symbol_padding)
     return body
 
 def writePadding(filename, header, body):
-    fileout = open(filename,'wb')
+    fileout = open(filename, 'wb')
     fileout.write(header)
     fileout.write(body)
     fileout.close()
-    
 
 def chunkBody(body, len_chunk):
     block_list = list()
-    for i in range (len(body)/len_chunk):
+    for i in range (len(body) / len_chunk):
         block_list.append(body[i*len_chunk:(i+1)*len_chunk])
-        
     return block_list
-    
 
 def int2char(intlist):
     tmp = list()
@@ -155,24 +137,14 @@ def int2char(intlist):
         tmp.append(chr(i))
     return tmp
 
-def char2int(charlist, p):
-#    tmp = list()
-#    for c in charlist:
-#        res = ord(c)
-#        if res > p:
-#            sys.exit("L'intero:", c, "e' maggiore della chiave p:", p, ", aumentare la chiave'")
-#        tmp.append(res)
-#    return tmp
+def char2int(charlist, fn):
     tmp = list()
     for word in charlist:
         res = binascii.b2a_hex(word)
         res = int(res,16)
-        if res > p:
-            #sys.exit("L'intero:", res, "e' maggiore della chiave p:", p, ", aumentare la chiave'")
-            print res, p
-            sys.exit("uscito")
+        if res > fn:
+            sys.exit("ERRORE: L'intero: " + '{0:,}'.format(res) + " e' maggiore della chiave fn: " + '{0:,}'.format(fn) + ". Aumentare i numeri primi")
         tmp.append(res)
-        
     return tmp
 
 def algorithm(message, k, p):
@@ -191,5 +163,3 @@ def phi(n):
 if __name__ == "__main__":
     print modinv(43, 103)
     print pyprimes.next_prime(100000000)
-
-

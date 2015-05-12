@@ -19,7 +19,7 @@ function pythonRun($cmdline) {
 <h2>Immagine iniziale:</h2>
 <? printTga("lena.tga"); ?>
 <br/><br/>
-<? pythonRun("python main.py lena.tga 10000000 1000 1200"); ?>
+<? pythonRun("python main.py lena.tga 99999999999 8000 9000"); ?>
 <br/><br/>
 <h2>Immagine criptata da A:</h2>
 <? printTga("lena_eA.tga"); ?>

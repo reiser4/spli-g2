@@ -19,13 +19,9 @@ function pythonRun($cmdline) {
 <h2>Immagine iniziale:</h2>
 <? printTga("lena.tga"); ?>
 <br/><br/>
-<? pythonRun("python main.py lena.tga 100 11 12"); ?>
+<? pythonRun("python main.py lena.tga 998999999 9999999999 1000000"); ?>
 <br/><br/>
-<h2>Immagine criptata da A:</h2>
-<? printTga("lena_eA.tga"); ?>
-<br/><br/>
-<h2>Immagine decriptata da B:</h2>
-<? printTga("lena_dA.tga"); ?>
-
-<br/><br/>
-<? pythonRun("python bruteforce.py 1313"); ?>
+<h2>Immagine decriptata:</h2>
+<? printTga("lena_decrypted.tga"); ?>
+<h2>Immagine bruteforce:</h2>
+<? printTga("lena_bruteforce.tga"); ?>

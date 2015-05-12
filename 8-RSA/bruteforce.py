@@ -4,42 +4,24 @@ import time
 import sys
 import pyprimes
 
-if __name__ == "__main__":
-    filename_ori = "lena.tga"
-    filename_encrypt = "lena_eA.tga"
-    filename_bruteforce = "lena_bruteforce.tga"
-    n = int(sys.argv[1])
-    print "Welcome to the party\n" 
-    print "Inizio l'attacco"
+def attack(filename_pad, filename_enc, filename_bru, n, start_dec, dim_blocco, header, body_enc):
+    print "Welcome to the partt"
+    print "Start attack"
     print "Attendi..."
-    
-    (header, body) = utils.splitToHeaderBody(filename_encrypt)
-    #body = utils.char2int(body, n)
-    
-    
-    intfile = open(filename_encrypt + "-int",'rb')
-    cbody = intfile.read()
-    ibody = cbody.split(" ")
-    body = list()
-    for integer in ibody:
-        if integer != "":
-            body.append(int(integer))
-    intfile.close()
-    
-    
-    md5_ori = utils.md5(filename_ori)
+
+    md5_pad = utils.md5(filename_pad)
     start = time.time()
-    
-    for key in range(970, 1024):
-        print "Provo con la chiave: '" + str(key) + "'"
-        body1 = utils.algorithm(body, key, n)
-        utils.writeFileTmp(filename_bruteforce, header, body1)
-        md5_bruteforce = utils.md5(filename_bruteforce)
-        if utils.md5same(md5_ori, md5_bruteforce):
+
+    for key in range(start_dec, start_dec + 10):
+        print "Provo con la chiave: '" +  '{0:,}'.format(key) + "'"
+        body_bru = utils.algorithm(body_enc, key, n)
+        utils.writeFile(filename_bru, header, body_bru)
+        md5_bru = utils.md5(filename_bru)
+        if utils.md5same(md5_pad, md5_bru):
             print
-            print "md5 del file '" + filename_ori + "':\t\t" + md5_ori
-            print "md5 del file '" + filename_bruteforce + "':\t" + md5_bruteforce
-            print "La chiave del tesoro e': '" + str(key) + "'"
+            print "md5 del file '" + filename_pad + "':\t" + md5_pad
+            print "md5 del file '" + filename_bru + "':\t" + md5_bru
+            print "La chiave del tesoro e': '" + '{0:,}'.format(key) + "'"
             print "E' stata trovata in: " + str(round(time.time() - start, 2)) + " secondi"
             break
         else:
