@@ -61,7 +61,7 @@ def splitToHeaderBody(filename):
     body = data[lenheader:]
     return header, body
 
-def writeFileTmp(filename, header, body):
+def writeFileTmp(filename, header, body, dim_blocco):
     """
     Il body deve essere una lista di interi perche' per ogni ciclo trasformo
     l'intero in carattere, questo per evitare un ulteriore ciclo for'
@@ -74,7 +74,7 @@ def writeFileTmp(filename, header, body):
     for b in body:
 #        fileout.write(chr(b%(256))
         #print type(binascii.a2b_hex(b)), binascii.a2b_hex(b)
-       
+        b = b % pow(2,dim_blocco*8)
         if hex(b)[-1] != 'L':
             res = hex(b)[2:]
         else:

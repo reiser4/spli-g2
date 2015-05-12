@@ -59,8 +59,8 @@ if __name__ == "__main__":
     print "A encrypt"
     body1AtoB = utils.algorithm(body_num, e, n) # Qui passiamo la lista di blocchi
     print len(body1AtoB)                                            # gia'' trasformata in interi
-    utils.writeFileTmp(filename + "_eA." + fileext, header, body1AtoB)
-    
+    utils.writeFileTmp(filename + "_eA." + fileext, header, body1AtoB,dim_blocco)
+    print max(body1AtoB)
     #print "B -encrypt-> A"
     #body1BtoA = utils.algorithm(body1AtoB, eB, p)
     #utils.writeFileTmp(filename + "_eB." + fileext, header, body1BtoA)
