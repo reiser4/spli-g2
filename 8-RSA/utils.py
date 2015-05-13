@@ -68,6 +68,7 @@ def writeFileDec(filename, header, body, dim_blocco):
     fileout = open(filename,'wb')
     fileout.write(header)
     n_byte = 0
+
     for b in body:
         #fileout.write(chr(b%(256)))
         #print type(binascii.a2b_hex(b)), binascii.a2b_hex(b)
@@ -81,9 +82,10 @@ def writeFileDec(filename, header, body, dim_blocco):
             res = '0' + res
         #print "RES: ",res
         for i in range(len(res)/2):
-            #print res[2*i:(2*i)+2], binascii.a2b_hex(res[2*i:(2*i)+2])
+            #print binascii.a2b_hex(word), binascii.a2b_hex(res[2*i:(2*i)+2])
             fileout.write(binascii.a2b_hex(res[2*i:(2*i)+2]))
             n_byte += 1
+    fileout.write("0"*2000)
     fileout.flush()
     fileout.close()
     #print "SCRITTI ", n_byte, "byte"

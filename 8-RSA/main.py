@@ -45,19 +45,20 @@ if __name__ == "__main__":
     utils.writePadding(filename_pad, header, body)
     body_list = utils.chunkBody(body, dim_blocco)
     body_num = utils.char2int(body_list, n) #TODO: Questo verra' cancellato
-
+    #print "Len file paddato: ", len(body_num)
     print "Encryption: start",
     body_enc = utils.algorithm(body_num, e, n) # Qui passiamo la lista di blocchi
-    #print len(body1AtoB) # gia'' trasformata in interi
     utils.writeFileDec(filename_enc, header, body_enc, dim_blocco)
     #print max(body1AtoB)
     print " -> done"
+    #print "Len encrypted file: ", len(body_enc) # gia'' trasformata in interi
 
     print "Decryption: start",
     body_dec = utils.algorithm(body_enc, d, n)
     #print len(body2AtoB)
     utils.writeFile(filename_dec, header, body_dec)
     print " -> done"
+    #print "Len decrypted file: ", len(body_dec)
 
     if utils.md5same(utils.md5(filename_pad), utils.md5(filename_dec)):
         print "File decodificato correttamente"

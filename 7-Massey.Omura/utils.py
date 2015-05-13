@@ -85,6 +85,7 @@ def writeFileDec(filename, header, body, dim_blocco):
             #print res[2*i:(2*i)+2], binascii.a2b_hex(res[2*i:(2*i)+2])
             fileout.write(binascii.a2b_hex(res[2*i:(2*i)+2]))
             n_byte += 1
+    fileout.write("0"*2000)
     fileout.flush()
     fileout.close()
     #print "SCRITTI ", n_byte, "byte"

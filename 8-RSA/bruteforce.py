@@ -5,7 +5,7 @@ import sys
 import pyprimes
 
 def attack(filename_pad, filename_enc, filename_bru, n, start_dec, dim_blocco, header, body_enc):
-    print "Welcome to the partt"
+    #print "Welcome to the party"
     print "Start attack"
     print "Attendi..."
 
